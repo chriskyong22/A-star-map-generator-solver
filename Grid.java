@@ -1,17 +1,16 @@
 import java.awt.Point;
-import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileWriter;
-import java.io.IOException;
 
 public class Grid{
     private final int columnSize = 160;
     private final int rowSize = 120;
     private Point startVertex;
     private Point endVertex;
-    private Point[] hardToTraverse = null;
+    private Point[] hardToTraverse;
     private char[][] map;
     Grid(){
         this.map = new char[rowSize][columnSize];
@@ -22,22 +21,59 @@ public class Grid{
         }
         startVertex = null;
         endVertex = null;
+        hardToTraverse = null;
     }
+
+    Grid(String filepath){
+        this.map = new char[rowSize][columnSize];
+        this.hardToTraverse = new Point[8];
+        generateGridFromFile(filepath);
+    }
+
+    void generateGridFromFile(String filePath){
+        try{
+            BufferedReader fileObj = new BufferedReader(new FileReader(filePath));
+            int index = 0;
+            for(int i = 0; i < 10; i++){
+                String[] vertex = fileObj.readLine().split(" ");
+                if(i == 0){
+                    this.startVertex = new Point(Integer.parseInt(vertex[0]), Integer.parseInt(vertex[1]));
+                }else if(i == 1){
+                    this.endVertex = new Point(Integer.parseInt(vertex[0]), Integer.parseInt(vertex[1]));
+                }else{
+                    this.hardToTraverse[index] = new Point(Integer.parseInt(vertex[0]), Integer.parseInt(vertex[1]));
+                    index++;
+                }
+            }
+            for(int i = 0; i < rowSize; i++){
+                String line = fileObj.readLine();
+                for(int j = 0; j < columnSize; j++){
+                    map[i][j] = line.charAt(j);
+                }
+            }
+            System.out.println("Successfully populated the map given the file");
+            fileObj.close();
+        }catch(Exception e){
+            System.out.println("There was an error reading the file to generate the map");
+            e.printStackTrace();
+        }
+    }
+
 
     void generateGrid(){
-        initializeHardTraverse();
-        initializeRivers();
-        initializeBlocked();
-        initializeStartGoalVertex();
+        generateHardTraverseCells();
+        generateRivers();
+        generateBlockedCells();
+        generateStartGoalVertex();
     }
 
-    void initializeStartGoalVertex(){
-        Point start = generateStartGoalVertex();
+    void generateStartGoalVertex(){
+        Point start = generateStartGoalPoints();
         int distance = 0;
         Point end = null;
         while(distance < 100){
             distance = 0;
-            end = generateStartGoalVertex();
+            end = generateStartGoalPoints();
             distance += Math.abs(start.getX() - end.getX());
             distance += Math.abs(start.getY() - end.getY());
         }
@@ -45,7 +81,7 @@ public class Grid{
         this.endVertex = end;
     }
 
-    Point generateStartGoalVertex(){
+    Point generateStartGoalPoints(){
         Point newPoint = null;
         boolean validPoint = false;
         while(validPoint != true){
@@ -82,7 +118,7 @@ public class Grid{
         return newPoint;
     }
 
-    void initializeBlocked(){
+    void generateBlockedCells(){
         int blockLeft = (int) ((0.20 * (columnSize * rowSize)));
         System.out.println("Populating " + blockLeft + " blocked spaces");
         System.out.println();
@@ -96,7 +132,7 @@ public class Grid{
         }
     }
 
-    void initializeRivers(){
+    void generateRivers(){
         int numberOfRivers = 4;
         ArrayList<Point> attempted = new ArrayList<Point>();
         ArrayList<Point> allRiverMoves = new ArrayList<Point>();
@@ -339,7 +375,7 @@ public class Grid{
         }
     }
 
-    void initializeHardTraverse(){
+    void generateHardTraverseCells(){
         int numberOfPoints = 0;
         hardToTraverse = new Point[8];
         while(numberOfPoints < 8){
@@ -413,9 +449,7 @@ public class Grid{
                 for(int y = 0; y < columnSize; y++){
                     fileObj.write(map[x][y]);
                 }
-                if(x != rowSize - 1){
-                    fileObj.write("\n");
-                }
+                fileObj.write("\n");
             }
             fileObj.close();
             System.out.println("Done writing out");
