@@ -1,17 +1,17 @@
-public class Test extends Grid{
+public class Test{
     public static void main(String[] args){
-        Grid newMap = new Grid("filePath");
+        Grid newMap = new Grid();
+        //newMap.printGrid();
+        //newMap.printStartVertex();
+        //newMap.printEndVertex();
+        //newMap.printHardToTraverse();
+        newMap.generateGrid();
+        System.out.println();
         newMap.printGrid();
         newMap.printStartVertex();
         newMap.printEndVertex();
         newMap.printHardToTraverse();
-        // newMap.generateGrid();
-        // System.out.println();
-        // newMap.printGrid();
-        // newMap.printStartVertex();
-        // newMap.printEndVertex();
-        // newMap.printHardToTraverse();
-        // newMap.writeToFile("filePath");
+        newMap.writeToFile("filepath");
 
     }
 }

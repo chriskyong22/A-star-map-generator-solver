@@ -11,12 +11,12 @@ public class Grid{
     private Point startVertex;
     private Point endVertex;
     private Point[] hardToTraverse;
-    private char[][] map;
+    private Cell[][] map;
     Grid(){
-        this.map = new char[rowSize][columnSize];
+        this.map = new Cell[rowSize][columnSize];
         for(int x = 0; x < rowSize; x++){
             for(int y = 0; y < columnSize; y++){
-                this.map[x][y] = '1';
+                this.map[x][y] = new Cell();
             }
         }
         startVertex = null;
@@ -25,12 +25,12 @@ public class Grid{
     }
 
     Grid(String filepath){
-        this.map = new char[rowSize][columnSize];
+        this.map = new Cell[rowSize][columnSize];
         this.hardToTraverse = new Point[8];
-        generateGridFromFile(filepath);
+        generateMapFromFile(filepath);
     }
 
-    void generateGridFromFile(String filePath){
+    void generateMapFromFile(String filePath){
         try{
             BufferedReader fileObj = new BufferedReader(new FileReader(filePath));
             int index = 0;
@@ -48,7 +48,7 @@ public class Grid{
             for(int i = 0; i < rowSize; i++){
                 String line = fileObj.readLine();
                 for(int j = 0; j < columnSize; j++){
-                    map[i][j] = line.charAt(j);
+                    map[i][j] = new Cell(line.charAt(j));
                 }
             }
             System.out.println("Successfully populated the map given the file");
@@ -110,7 +110,7 @@ public class Grid{
                     newPoint = null;
                     break;
             }
-            if(map[x][y] != '0'){
+            if(map[x][y].getType() != '0'){
                 newPoint = new Point(x, y);
                 validPoint = true;
             }
@@ -125,8 +125,8 @@ public class Grid{
         while(blockLeft >= 0){
             int x = (int) (Math.random() * rowSize);
             int y = (int) (Math.random() * columnSize);
-            if(map[x][y] != 'a' && map[x][y] != 'b'){
-                map[x][y] = '0';
+            if(map[x][y].getType() != 'a' && map[x][y].getType() != 'b'){
+                map[x][y].setType('0');
                 blockLeft--;
             }
         }
@@ -221,8 +221,6 @@ public class Grid{
                 }
                 System.out.println("[UPDATED] X: " + x + " Y: " + y + " River Length: " + riverLength);
                 if(x == 0 || y == 0 || y == columnSize - 1 || x == rowSize - 1){ //Next iteration starts exactly on the boundary, should not expand anymore (this is an edgecase)
-                    temp.add(new Point(x,y));
-                    riverLength++;
                     System.out.println("Finished Generating this River, reached boundaries");
                 }
                 currentRiverMoves.addAll(temp);
@@ -249,7 +247,7 @@ public class Grid{
         ArrayList<Point> positions = new ArrayList<Point>();
         if(direction == 3){ // Go down
             for(int i = x; i < Math.min(x + 20, rowSize); i++){
-                if(map[i][y] == 'a' || map[i][y] == 'b'){
+                if(map[i][y].getType() == 'a' || map[i][y].getType() == 'b'){
                     return null;
                 }else{
                     Point newPoint = new Point(i, y);
@@ -259,7 +257,7 @@ public class Grid{
             return positions;
         }else if(direction == 1){ // Go Up
             for(int i = x; i > Math.max(x - 20, -1); i--){
-                if(map[i][y] == 'a' || map[i][y] == 'b'){
+                if(map[i][y].getType() == 'a' || map[i][y].getType() == 'b'){
                     return null;
                 }else{
                     Point newPoint = new Point(i, y);
@@ -269,7 +267,7 @@ public class Grid{
             return positions;
         }else if(direction == 4){ // Go left
             for(int i = y; i > Math.max(y - 20, -1); i--){
-                if(map[x][i] == 'a' || map[x][i] == 'b'){
+                if(map[x][i].getType() == 'a' || map[x][i].getType() == 'b'){
                     return null;
                 }else{
                     Point newPoint = new Point(x, i);
@@ -279,7 +277,7 @@ public class Grid{
             return positions;
         }else{ //Go right
             for(int i = y; i < Math.min(y + 20, columnSize); i++){
-                if(map[x][i] == 'a' || map[x][i] == 'b'){
+                if(map[x][i].getType() == 'a' || map[x][i].getType() == 'b'){
                     return null;
                 }else{
                     Point newPoint = new Point(x, i);
@@ -355,10 +353,12 @@ public class Grid{
      */
     void applyPositions(ArrayList<Point> positions){
         for(Point position : positions){
-            if(map[(int) position.getX()][(int) position.getY()]  == '1'){
-                map[(int) position.getX()][(int) position.getY()] = 'a';
+            if(map[(int) position.getX()][(int) position.getY()].getType() == '1'){
+                map[(int) position.getX()][(int) position.getY()].setType('a');
+            }else if(map[(int) position.getX()][(int) position.getY()].getType() == '2'){
+                map[(int) position.getX()][(int) position.getY()].setType('b');
             }else{
-                map[(int) position.getX()][(int) position.getY()] = 'b';
+                System.out.println("ERROR: found unidentified element at: " + (int) position.getX() + " " + (int) position.getY());
             }
         }
     }
@@ -367,10 +367,10 @@ public class Grid{
      */
     void resetMap(ArrayList<Point> positions){
         for(Point position : positions){
-            if(map[(int) position.getX()][(int) position.getY()]  == 'a'){
-                map[(int) position.getX()][(int) position.getY()] = '1';
+            if(map[(int) position.getX()][(int) position.getY()].getType() == 'a'){
+                map[(int) position.getX()][(int) position.getY()].setType('1');
             }else{
-                map[(int) position.getX()][(int) position.getY()] = '2';
+                map[(int) position.getX()][(int) position.getY()].setType('2');
             }
         }
     }
@@ -391,7 +391,7 @@ public class Grid{
             for(int regionX = minX; regionX <= maxX; regionX++){
                 for(int regionY = minY; regionY <= maxY; regionY++){
                     if(((int) (Math.random() * 2)) == 1){
-                        this.map[regionX][regionY] = '2';
+                        this.map[regionX][regionY].setType('2');
                     }
                 }
             }
@@ -402,7 +402,7 @@ public class Grid{
     void printGrid(){
         for(int x = 0; x < rowSize; x++){
             for(int y = 0; y < columnSize; y++){
-                System.out.print(map[x][y]);
+                System.out.print(map[x][y].getType());
             }
             System.out.println();
         }
@@ -433,8 +433,18 @@ public class Grid{
         }
     }
 
-    int getType(int x, int y){
-        return this.map[x][y];
+    /**
+     * 
+     * @param x
+     * @param y
+     * @return the type of the cell, 'i' if invalid cell (meaning out of bounds)
+     */
+    char getType(int x, int y){
+        if(x < 0 || x >= rowSize || y < 0 || y >= columnSize){
+            return 'i';
+        }else{
+            return this.map[x][y].getType();
+        }
     }
 
     void writeToFile(String filename){
@@ -447,7 +457,7 @@ public class Grid{
             }
             for(int x = 0; x < rowSize; x++){
                 for(int y = 0; y < columnSize; y++){
-                    fileObj.write(map[x][y]);
+                    fileObj.write(map[x][y].getType());
                 }
                 fileObj.write("\n");
             }
