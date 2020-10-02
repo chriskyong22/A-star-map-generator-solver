@@ -63,6 +63,8 @@ public class Grid{
     void generateGrid(){
         generateHardTraverseCells();
         generateRivers();
+        System.out.println("Finished Generating all Rivers: ");
+        printGrid();
         generateBlockedCells();
         generateStartGoalVertex();
     }
@@ -225,7 +227,7 @@ public class Grid{
                 }
                 currentRiverMoves.addAll(temp);
                 applyPositions(temp);
-                printGrid();
+                //printGrid();
             }
             System.out.println("[Final] X: " + x + " Y: " + y + " River Length: " + riverLength);
             if(riverLength < 100){
@@ -233,6 +235,7 @@ public class Grid{
             }else{
                 allRiverMoves.addAll(currentRiverMoves);
                 numberOfRivers = numberOfRivers - 1;
+                printGrid();
             }
         }
     }
@@ -339,14 +342,43 @@ public class Grid{
         return new Point(x,y);
     }
     /**
-     * Checks if a point is on the boundaries
+     * Checks if a point is on the boundaries or past the boundaries 
      * @param x 
      * @param y 
-     * @return true if point is on boundaries, otherwise false
+     * @return true if point is on boundaries or past the boundaries, otherwise false
      */
     boolean checkBoundaries(int x, int y){
         return x <= 0 || x >= (rowSize - 1) || y <= 0 || y >= (columnSize - 1);
     }
+
+    boolean checkOutOfBounds(int x, int y){
+        return x < 0 || x >= rowSize || y < 0 || y >= columnSize;
+    }
+    /**
+     * 
+     * @param x
+     * @param y
+     * @return null if invalid point, otherwise an Arraylist of points representing the valid neighbors
+     */
+    ArrayList<Point> getNeighbors(int x, int y){
+        //Safety check to make sure you're not getting neighbors for out of bounds points 
+        if(checkOutOfBounds(x, y)){
+            System.out.println("Out of bounds point entered: [X: " + x + "] [Y: " + y + "]");
+            return null;
+        }
+
+        //Check the 3x3 area, starting from top left corner to bottom right corner
+        ArrayList<Point> neighbors = new ArrayList<Point>();
+        for(int posX = x - 1; posX <= x + 1; posX++){
+            for(int posY = y - 1; posY <= y + 1; posY++){
+                if(!checkOutOfBounds(posX, posY) && (posX != x || posY != y)){
+                    neighbors.add(new Point(posX, posY));
+                }
+            }
+        }
+        return neighbors;
+    }
+
 
     /**
      * @param positions - ArrayList of points to update to RiverType cells in the map

@@ -12,6 +12,13 @@ public class Cell implements Comparable<Cell> {
     char getType(){
         return cellType; 
     }
+    boolean isBlocked(){
+        return (cellType == '0');
+    }
+
+    boolean isRiver(){
+        return (cellType == 'a') || (cellType == 'b');
+    }
 
     void setHeuristic(double value){
         this.heuristicvalue = value;
