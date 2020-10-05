@@ -16,7 +16,7 @@ public class Grid{
         this.map = new Cell[rowSize][columnSize];
         for(int x = 0; x < rowSize; x++){
             for(int y = 0; y < columnSize; y++){
-                this.map[x][y] = new Cell();
+                this.map[x][y] = new Cell(x, y);
             }
         }
         startVertex = null;
@@ -48,7 +48,7 @@ public class Grid{
             for(int i = 0; i < rowSize; i++){
                 String line = fileObj.readLine();
                 for(int j = 0; j < columnSize; j++){
-                    map[i][j] = new Cell(line.charAt(j));
+                    map[i][j] = new Cell(line.charAt(j), i, j);
                 }
             }
             System.out.println("Successfully populated the map given the file");
@@ -355,7 +355,7 @@ public class Grid{
         return x < 0 || x >= rowSize || y < 0 || y >= columnSize;
     }
     /**
-     * 
+     * Get the neighbors of a designed point 
      * @param x
      * @param y
      * @return null if invalid point, otherwise an Arraylist of points representing the valid neighbors
@@ -381,6 +381,7 @@ public class Grid{
 
 
     /**
+     * Used to update the River cells in the map 
      * @param positions - ArrayList of points to update to RiverType cells in the map
      */
     void applyPositions(ArrayList<Point> positions){
