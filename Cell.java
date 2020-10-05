@@ -1,40 +1,58 @@
 public class Cell implements Comparable<Cell> {
     private char cellType; 
-    private double heuristicvalue;
-    Cell(){
+    private double cost;
+    private Cell parent;
+    private int x;
+    private int y;
+
+    Cell(int x, int y){
         cellType = '1';
-        heuristicvalue = 0;
+        cost = 0;
+        parent = null;
+        this.x = x;
+        this.y = y;
     }
-    Cell(char type){
+
+    Cell(char type, int x, int y){
         this.cellType = type;
-        heuristicvalue = 0;
+        cost = 0;
+        parent = null;
+        this.x = x;
+        this.y = y;
     }
+
+    void setParent(Cell parent){
+        this.parent = parent;
+    }
+    Cell getParent(){
+        return this.parent;
+    }
+
     char getType(){
         return cellType; 
     }
+
     boolean isBlocked(){
         return (cellType == '0');
     }
-
+    
     boolean isRiver(){
         return (cellType == 'a') || (cellType == 'b');
     }
 
-    void setHeuristic(double value){
-        this.heuristicvalue = value;
+    void setCost(double value){
+        this.cost = value;
     }
 
-    double getHeuristic(){
-        return heuristicvalue;
+    double getCost(){
+        return cost;
     }
 
     public int compareTo(Cell other){
-        if(other.getHeuristic() > this.heuristicvalue){
-            return -1;
-        }else if(other.getHeuristic() == this.heuristicvalue){
+        if(other.x == this.x && other.y == this.y){
             return 0;
         }else{
-            return 1;
+            return -1;
         }
     }
 
