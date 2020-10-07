@@ -1,3 +1,5 @@
+package sample.back;
+
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.awt.Point;

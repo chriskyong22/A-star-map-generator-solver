@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <Button id="importButton" fx:id="importButton" layoutX="52.0" layoutY="132.0" mnemonicParsing="false" onMouseClicked="#importME" text="Import" />
+            <Button id="generateButton" fx:id="generateButton" layoutX="52.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#generateME" text="Generate" />
+            <TextField id="infoField" fx:id="infoField" layoutX="9.0" layoutY="348.0" prefHeight="26.0" prefWidth="86.0" promptText="x,y" />
+            <Button id="infoButton" fx:id="infoButton" layoutX="102.0" layoutY="348.0" mnemonicParsing="false" text="Get Info" />
+            <TextField id="pathField" fx:id="pathField" layoutX="13.0" layoutY="98.0" promptText="File Path" />
+         </children></AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <Pane id="gridPane" fx:id="gridPane" layoutX="2.0" layoutY="-1.0" prefHeight="398.0" prefWidth="418.0" />
+         </children></AnchorPane>
+  </items>
+</SplitPane>

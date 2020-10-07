@@ -1,3 +1,5 @@
+package sample.back;
+
 public class Cell implements Comparable<Cell> {
     private char cellType; 
     private double cost;
@@ -28,7 +30,7 @@ public class Cell implements Comparable<Cell> {
         return this.parent;
     }
 
-    char getType(){
+    public char getType(){
         return cellType; 
     }
 

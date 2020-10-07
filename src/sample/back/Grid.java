@@ -1,18 +1,22 @@
+package sample.back;
+
 import java.awt.Point;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.FileWriter;
+import sample.back.*;
+
 
 public class Grid{
-    private final int columnSize = 160;
-    private final int rowSize = 120;
-    private Point startVertex;
-    private Point endVertex;
-    private Point[] hardToTraverse;
-    private Cell[][] map;
-    Grid(){
+    public final int columnSize = 160;
+    public final int rowSize = 120;
+    public Point startVertex;
+    public Point endVertex;
+    public Point[] hardToTraverse;
+    public Cell[][] map;
+    public Grid(){
         this.map = new Cell[rowSize][columnSize];
         for(int x = 0; x < rowSize; x++){
             for(int y = 0; y < columnSize; y++){
@@ -24,7 +28,7 @@ public class Grid{
         hardToTraverse = null;
     }
 
-    Grid(String filepath){
+    public Grid(String filepath){
         this.map = new Cell[rowSize][columnSize];
         this.hardToTraverse = new Point[8];
         generateMapFromFile(filepath);
@@ -60,7 +64,7 @@ public class Grid{
     }
 
 
-    void generateGrid(){
+    public void generateGrid(){
         generateHardTraverseCells();
         generateRivers();
         System.out.println("Finished Generating all Rivers: ");
@@ -480,7 +484,7 @@ public class Grid{
         }
     }
 
-    void writeToFile(String filename){
+    public void writeToFile(String filename){
         try{
             BufferedWriter fileObj = new BufferedWriter(new FileWriter(filename));
             fileObj.write((int) startVertex.getX() + " " + (int) (startVertex.getY()) + "\n");
