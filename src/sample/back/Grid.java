@@ -484,6 +484,21 @@ public class Grid{
             return this.map[x][y].getType();
         }
     }
+    Point getStart(){
+        return startVertex;
+    }
+
+    void setStart(int x, int y){
+        this.startVertex = new Point(x,y);
+    }
+
+    void setEnd(int x, int y){
+        this.endVertex = new Point(x,y);
+    }
+
+    Point getEndVertex(){
+        return endVertex;
+    }
 
     public void writeToFile(String filename){
         try{
@@ -506,4 +521,6 @@ public class Grid{
             e.printStackTrace();
         }
     }
+
+
 }
