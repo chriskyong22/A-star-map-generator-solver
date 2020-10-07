@@ -78,10 +78,10 @@ public class Grid{
         int distance = 0;
         Point end = null;
         while(distance < 100){
-            distance = 0;
             end = generateStartGoalPoints();
-            distance += Math.abs(start.getX() - end.getX());
-            distance += Math.abs(start.getY() - end.getY());
+            double distanceX = Math.abs(start.getX() - end.getX());
+            double distanceY = Math.abs(start.getY() - end.getY());
+            distance = (int) Math.sqrt((distanceX * distanceX) + (distanceY * distanceY));
         }
         this.startVertex = start;
         this.endVertex = end;
@@ -131,7 +131,7 @@ public class Grid{
         while(blockLeft >= 0){
             int x = (int) (Math.random() * rowSize);
             int y = (int) (Math.random() * columnSize);
-            if(map[x][y].getType() != 'a' && map[x][y].getType() != 'b'){
+            if(map[x][y].getType() == '1' || map[x][y].getType() == '2'){
                 map[x][y].setType('0');
                 blockLeft--;
             }
@@ -147,6 +147,7 @@ public class Grid{
             if(currentAttempt == null){
                 resetMap(allRiverMoves);
                 allRiverMoves.clear();
+                attempted.clear();
                 numberOfRivers = 4;
                 continue;
             }
@@ -301,10 +302,10 @@ public class Grid{
      * @Note The corners of the boundaries are excluded because we move away from the boundaries without hitting another boundary (since we cannot generate diagonally for the rivers)
     */
     Point getRandomBoundary(ArrayList<Point> listOfAttempted){
-        if(listOfAttempted.size() >= ((2 * rowSize) + (columnSize * 2))/2 ){
+        if(listOfAttempted.size() >= (int) (((2 * rowSize) + (columnSize * 2)) * .5) ){
             return null;
         }
-        int x = 1;
+        int x = 0;
         int y = 1;
         while(true){
             int quadrantic = (int) (Math.random() * 4);
@@ -312,27 +313,27 @@ public class Grid{
                 case 0: //Top
                     x = 0;
                     y = (int) ((Math.random() * columnSize) + 1);
-                    if(y == columnSize){
+                    while(y >= columnSize - 1){
                         y--;
                     }
                     break;   
                 case 1: //Bottom
                     x = rowSize - 1;
                     y = (int) ((Math.random() * columnSize) + 1);
-                    if(y == columnSize){
+                    while(y >= columnSize - 1){
                         y--;
                     }
                     break;
                 case 2: //Left
                     x = (int) ((Math.random() * rowSize) + 1);
-                    if(x == rowSize){
+                    while(x >= rowSize - 1){
                         x--;
                     } 
                     y = 0;
                     break;
                 case 3: //Right
                     x = (int) ((Math.random() * rowSize) + 1);
-                    if(x == rowSize){
+                    while(x >= rowSize - 1){
                         x--;
                     } 
                     y = columnSize - 1;
