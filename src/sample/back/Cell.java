@@ -42,6 +42,28 @@ public class Cell implements Comparable<Cell> {
         return (cellType == 'a') || (cellType == 'b');
     }
 
+    boolean isNormal() {
+        return (cellType == '1');
+    }
+    boolean isHard(){
+        return (cellType == '2');
+    }
+    boolean isDiagonal(Cell cell2){
+        return ( ((this.x - 1  == cell2.getX()) && (this.y - 1 == cell2.getY())) ||
+                 ((this.x - 1  == cell2.getX()) && (this.y + 1 == cell2.getY())) ||
+                 ((this.x + 1  == cell2.getX()) && (this.y - 1 == cell2.getY())) ||
+                 ((this.x + 1  == cell2.getX()) && (this.y + 1 == cell2.getY()))
+               );
+    }
+
+    int getX(){
+        return this.x;
+    }
+
+    int getY(){
+        return this.y;
+    }
+
     void setCost(double value){
         this.cost = value;
     }
