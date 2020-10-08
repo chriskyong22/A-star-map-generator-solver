@@ -43,10 +43,10 @@ public class Cell implements Comparable<Cell> {
     }
 
     boolean isNormal() {
-        return (cellType == '1');
+        return (cellType == '1' || cellType == 'a');
     }
     boolean isHard(){
-        return (cellType == '2');
+        return (cellType == '2' || cellType == 'b');
     }
     boolean isDiagonal(Cell cell2){
         return ( ((this.x - 1  == cell2.getX()) && (this.y - 1 == cell2.getY())) ||
