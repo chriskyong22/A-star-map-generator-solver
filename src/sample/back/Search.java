@@ -9,8 +9,16 @@ public class Search {
     PriorityQueue<Point> fringe;
 
     Search(Grid map){
+        //regular A*
 
     }
+
+    Search(Grid map, double weight){
+        //search with different weight
+        //need to get weight from user?
+
+    }
+
     /**
      * Compute the full cost f(x) with a given weight (f(x) = h(x) * weight + g(x))
      * @param weight The weight of the heuristic 
@@ -42,6 +50,21 @@ public class Search {
 
         return distance;
     }
+
+    double computeHeuristic(Cell start, Cell goal, double weight){
+        double distance = 0;
+        //
+        //overload for different weight
+        //
+        double distanceX = Math.abs(start.getX() - goal.getX());
+        double distanceY = Math.abs(start.getY() - goal.getY());
+        distance = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY));
+        distance *= weight;
+
+        return distance;
+    }
+
+
     /**
      * Compute the cost between traversing between the two ADJACENT cells 
      * @param start Cell 1
