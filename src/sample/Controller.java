@@ -43,7 +43,7 @@ public class Controller {
     @FXML
     public void generateME(){
 
-        Grid g = new Grid();
+        g = new Grid();
         g.generateGrid();
         g.writeToFile("map4.txt");
         buildGrid(g);
@@ -139,8 +139,8 @@ public class Controller {
     @FXML
     public void setGridGoal(){
         String input = goalField.getText();
-        int goalX = input.charAt(0);
-        int goalY = input.charAt(2);
+        int goalX = Character.getNumericValue(input.charAt(0));
+        int goalY = Character.getNumericValue(input.charAt(2));
 
 
         g.setEnd(goalX,goalY);
