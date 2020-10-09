@@ -7,17 +7,18 @@ import java.awt.Point;
 public class Search {
     private double weight;
     public Grid map;
-    Search(Grid map){
+
+    public Search(Grid map){
         this.map = map;
         this.weight = 1;
     }
 
-    Search(Grid map, double weight){
+    public Search(Grid map, double weight){
         this.map = map;
         this.weight = weight;
     }
 
-    ArrayList<Cell> generatePath(){
+    public ArrayList<Cell> generatePath(){
         ArrayList<Cell> tested = new ArrayList<Cell>();
         PriorityQueue<Cell> fringe = new PriorityQueue<Cell>();
         Point start = map.getStart();

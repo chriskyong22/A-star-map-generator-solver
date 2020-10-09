@@ -437,11 +437,11 @@ public class Grid{
         }
     }
 
-    Cell getCell(int x, int y){
+    public Cell getCell(int x, int y){
         return map[x][y];
     }
 
-    void printGrid(){
+    public void printGrid(){
         for(int x = 0; x < rowSize; x++){
             for(int y = 0; y < columnSize; y++){
                 System.out.print(map[x][y].getType());

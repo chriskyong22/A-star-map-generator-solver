@@ -1,8 +1,10 @@
 package sample;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -95,7 +97,8 @@ public class Controller {
         int goalY = (int) goal.getY();
 
         Rectangle[][] cells = new Rectangle[(int) width][(int) height];
-
+        Search test = new Search(g, 0);
+        test.generatePath();
         //Draw Rectangles in Pane
         for (int j = 0; j < height; ++j){
             //draw row
@@ -106,6 +109,11 @@ public class Controller {
                 cells[i][j].setY(j*rectangleW);
                 cells[i][j].setWidth(rectangleH);
                 cells[i][j].setHeight(rectangleW);
+                int finalI = i;
+                int finalJ = j;
+                cells[i][j].setOnMouseClicked(event -> {
+                    System.out.println("[" + finalJ + ":" + finalI + "]" + g.map[finalJ][finalI].getCost() + " and the HCost is: " + g.map[finalJ][finalI].getHCost());
+                });
 
                 switch(g.map[j][i].getType()){
                     case '0':
@@ -127,10 +135,16 @@ public class Controller {
                 gridPane.getChildren().add(cells[i][j]);
             }
         }
-
+        Cell goalCell = g.getCell(goalX, goalY);
+        while(!goalCell.getParent().equals(goalCell)){
+            cells[goalCell.getY()][goalCell.getX()].setFill(Color.YELLOWGREEN);
+            goalCell = goalCell.getParent();
+        }
         //Color start and end pos
         cells[startY][startX].setFill(Color.LIMEGREEN);
         cells[goalY][goalX].setFill(Color.RED);
+
+
     }
 
     /**

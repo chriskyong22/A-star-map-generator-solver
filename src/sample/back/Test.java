@@ -6,21 +6,21 @@ import java.util.ArrayList;
 public class Test{
     public static void main(String[] args){
         Grid newMap = new Grid("map4.txt");
-        /*
+
         newMap.printGrid();
         newMap.printStartVertex();
         newMap.printEndVertex();
         newMap.printHardToTraverse();
-
+        /*
         newMap.generateGrid();
         System.out.println();
         newMap.printGrid();
         newMap.printStartVertex();
         newMap.printEndVertex();
         newMap.printHardToTraverse();
-        newMap.writeToFile("map4.txt");
+        newMap.writeToFile("map1.txt");
         */
-        Search test = new Search(newMap, 10);
+        Search test = new Search(newMap, 1);
         ArrayList<Cell> temp = test.generatePath();
         Point goal = newMap.getEndVertex();
         Cell goalCell = newMap.getCell(goal.x, goal.y);

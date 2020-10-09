@@ -29,7 +29,7 @@ public class Cell implements Comparable<Cell> {
     void setParent(Cell parent){
         this.parent = parent;
     }
-    Cell getParent(){
+    public Cell getParent(){
         return this.parent;
     }
 
@@ -59,25 +59,25 @@ public class Cell implements Comparable<Cell> {
                );
     }
 
-    int getX(){
+    public int getX(){
         return this.x;
     }
 
-    int getY(){
+    public int getY(){
         return this.y;
     }
 
-    void setCost(double value){
+    public void setCost(double value){
         this.cost = value;
     }
 
-    double getCost(){
+    public double getCost(){
         return cost;
     }
-    void setHCost(double value){
+    public void setHCost(double value){
         this.hcost = value;
     }
-    double getHCost(){
+    public double getHCost(){
         return this.hcost;
     }
 
