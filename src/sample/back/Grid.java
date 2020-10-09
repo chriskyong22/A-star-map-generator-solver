@@ -50,7 +50,7 @@ public class Grid{
                 }
             }
             for(int i = 0; i < rowSize; i++){
-                String line = fileObj.readLine();
+                String line = fileObj.readLine().replaceAll("\\s", "");
                 for(int j = 0; j < columnSize; j++){
                     map[i][j] = new Cell(line.charAt(j), i, j);
                 }

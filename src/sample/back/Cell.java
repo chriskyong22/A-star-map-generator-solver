@@ -3,6 +3,7 @@ package sample.back;
 public class Cell implements Comparable<Cell> {
     private char cellType; 
     private double cost;
+    private double hcost;
     private Cell parent;
     private int x;
     private int y;
@@ -10,6 +11,7 @@ public class Cell implements Comparable<Cell> {
     Cell(int x, int y){
         cellType = '1';
         cost = Integer.MAX_VALUE;
+        hcost = Integer.MAX_VALUE;
         parent = null;
         this.x = x;
         this.y = y;
@@ -18,6 +20,7 @@ public class Cell implements Comparable<Cell> {
     Cell(char type, int x, int y){
         this.cellType = type;
         cost = Integer.MAX_VALUE;
+        hcost = Integer.MAX_VALUE;
         parent = null;
         this.x = x;
         this.y = y;
@@ -71,12 +74,18 @@ public class Cell implements Comparable<Cell> {
     double getCost(){
         return cost;
     }
+    void setHCost(double value){
+        this.hcost = value;
+    }
+    double getHCost(){
+        return this.hcost;
+    }
 
     @Override
     public int compareTo(Cell other){
-        if(this.cost == other.cost){
+        if(this.hcost == other.hcost){
             return 0;
-        }else if(this.cost > other.cost){
+        }else if(this.hcost > other.hcost){
             return 1;
         }else{
             return -1;

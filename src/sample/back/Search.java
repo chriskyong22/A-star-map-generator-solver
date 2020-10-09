@@ -28,6 +28,7 @@ public class Search {
         //Initialization of A*
         startCell.setParent(map.getCell(start.x, start.y));
         startCell.setCost(0);
+        startCell.setHCost(computeHeuristic(startCell, goalCell));
         fringe.add(map.getCell(start.x, start.y));
 
         while(!fringe.isEmpty()){
@@ -45,10 +46,11 @@ public class Search {
                     continue;
                 }
                 double g = current.getCost() + computeCost(current, neighbor);
-                double h = computeHeuristic(neighbor, goalCell);
-                double f = computeFullCost(weight, h, g);
-                if(neighbor.getCost() > f){
-                    neighbor.setCost(f);
+                if(neighbor.getCost() > g){
+                    neighbor.setCost(g);
+                    double h = computeHeuristic(neighbor, goalCell);
+                    double f = computeFullCost(weight, h, g);
+                    neighbor.setHCost(f);
                     neighbor.setParent(current);
                     if(fringe.contains(neighbor)){
                         fringe.remove(neighbor);
@@ -95,17 +97,6 @@ public class Search {
         distance *= weight;
 
         return distance;
-    }
-    double calculatePathCost(){
-        Point goal = map.getEndVertex();
-        Cell current = map.getCell(goal.x, goal.y);
-        Cell end = map.getCell(goal.x, goal.y);
-        double cost = end.getCost();
-        while(!current.getParent().equals(current)){
-            cost -= weight * computeHeuristic(current, end);
-            current = current.getParent();
-        }
-        return cost;
     }
 
     /**
