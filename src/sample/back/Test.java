@@ -11,6 +11,8 @@ public class Test{
         newMap.printStartVertex();
         newMap.printEndVertex();
         newMap.printHardToTraverse();
+        Point start = newMap.getStart();
+        Point end = newMap.getEndVertex();
         /*
         newMap.generateGrid();
         System.out.println();

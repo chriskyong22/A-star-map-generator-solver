@@ -146,9 +146,6 @@ public class Controller {
                 gridPane.getChildren().add(cells[i][j]);
             }
         }
-        //Color start and end pos
-        cells[startY][startX].setFill(Color.LIMEGREEN);
-        cells[goalY][goalX].setFill(Color.RED);
 
         //Draw Path
         if (b) {
@@ -158,7 +155,9 @@ public class Controller {
                 goalCell = goalCell.getParent();
             }
         }
-
+        //Color start and end pos
+        cells[startY][startX].setFill(Color.LIMEGREEN);
+        cells[goalY][goalX].setFill(Color.RED);
     }
 
     /**
@@ -169,7 +168,6 @@ public class Controller {
         String input = goalField.getText();
         int goalX = Integer.parseInt(input.substring(0, input.indexOf(',')));
         int goalY = Integer.parseInt(input.substring(input.indexOf(',') + 1));
-
         g.setEnd(goalX,goalY);
         buildGrid(g,false);
     }
@@ -196,7 +194,6 @@ public class Controller {
      */
     @FXML
     public void generatePath(){
-
         if(uniRadio.isSelected()){
             Search test = new Search(g, 0);
             test.generatePath();

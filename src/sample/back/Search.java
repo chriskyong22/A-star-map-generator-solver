@@ -46,6 +46,11 @@ public class Search {
                 if(tested.contains(neighbor)){
                     continue;
                 }
+                if(!fringe.contains(neighbor)){
+                    neighbor.setHCost(Integer.MAX_VALUE);
+                    neighbor.setCost(Integer.MAX_VALUE);
+                    neighbor.setParent(null);
+                }
                 double g = current.getCost() + computeCost(current, neighbor);
                 if(neighbor.getCost() > g){
                     neighbor.setCost(g);
