@@ -3,7 +3,9 @@ package sample;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -20,9 +22,7 @@ public class Controller {
     @FXML
     private Button generateButton;
     @FXML
-    private TextField infoField;
-    @FXML
-    private Button infoButton;
+    private TextArea infoArea;
     @FXML
     private TextField pathField;
     @FXML
@@ -35,6 +35,18 @@ public class Controller {
     private TextField goalField;
     @FXML
     private TextField startField;
+    @FXML
+    private RadioButton aRadio;
+    @FXML
+    private RadioButton weightedRadio;
+    @FXML
+    private RadioButton seqRadio;
+    @FXML
+    private TextField weightField;
+    @FXML
+    private Button pathButton;
+    @FXML
+    private RadioButton uniRadio;
 
     //Grid Object
     Grid g = new Grid();
@@ -48,7 +60,7 @@ public class Controller {
         g = new Grid();
         g.generateGrid();
         g.writeToFile("map4.txt");
-        buildGrid(g);
+        buildGrid(g,false);
 
     }
 
@@ -62,7 +74,7 @@ public class Controller {
         if (filepath.isEmpty()) return;
 
         g = new Grid(filepath);
-        buildGrid(g);
+        buildGrid(g,false);
 
 
     }
@@ -80,7 +92,7 @@ public class Controller {
      * Path - Yellow
      * @param g - Input Grid object
      */
-    public void buildGrid(Grid g){
+    public void buildGrid(Grid g,boolean b){
         //Clear Pane
         gridPane.getChildren().clear();
 
@@ -97,8 +109,7 @@ public class Controller {
         int goalY = (int) goal.getY();
 
         Rectangle[][] cells = new Rectangle[(int) width][(int) height];
-        Search test = new Search(g, 0);
-        test.generatePath();
+
         //Draw Rectangles in Pane
         for (int j = 0; j < height; ++j){
             //draw row
@@ -112,7 +123,7 @@ public class Controller {
                 int finalI = i;
                 int finalJ = j;
                 cells[i][j].setOnMouseClicked(event -> {
-                    System.out.println("[" + finalJ + ":" + finalI + "]" + g.map[finalJ][finalI].getCost() + " and the HCost is: " + g.map[finalJ][finalI].getHCost());
+                    infoArea.setText("[" + finalJ + ":" + finalI + "]" + "\n" + "Cell Cost: " + g.map[finalJ][finalI].getCost() + "\n" + "HCost is: " + g.map[finalJ][finalI].getHCost());
                 });
 
                 switch(g.map[j][i].getType()){
@@ -126,7 +137,7 @@ public class Controller {
                         cells[i][j].setFill(Color.GRAY);
                         break;
                     case 'a':
-                        cells[i][j].setFill(Color.BLUE);
+                        cells[i][j].setFill(Color.LIGHTBLUE);
                         break;
                     case 'b':
                         cells[i][j].setFill(Color.DARKBLUE);
@@ -135,15 +146,18 @@ public class Controller {
                 gridPane.getChildren().add(cells[i][j]);
             }
         }
-        Cell goalCell = g.getCell(goalX, goalY);
-        while(!goalCell.getParent().equals(goalCell)){
-            cells[goalCell.getY()][goalCell.getX()].setFill(Color.YELLOWGREEN);
-            goalCell = goalCell.getParent();
-        }
         //Color start and end pos
         cells[startY][startX].setFill(Color.LIMEGREEN);
         cells[goalY][goalX].setFill(Color.RED);
 
+        //Draw Path
+        if (b) {
+            Cell goalCell = g.getCell(goalX, goalY);
+            while (!goalCell.getParent().equals(goalCell)) {
+                cells[goalCell.getY()][goalCell.getX()].setFill(Color.YELLOWGREEN);
+                goalCell = goalCell.getParent();
+            }
+        }
 
     }
 
@@ -157,7 +171,7 @@ public class Controller {
         int goalY = Integer.parseInt(input.substring(input.indexOf(',') + 1));
 
         g.setEnd(goalX,goalY);
-        buildGrid(g);
+        buildGrid(g,false);
     }
 
     /**
@@ -169,8 +183,35 @@ public class Controller {
         int startX = Integer.parseInt(input.substring(0, input.indexOf(',')));
         int startY = Integer.parseInt(input.substring(input.indexOf(',') + 1));
         g.setStart(startX,startY);
-        buildGrid(g);
+        buildGrid(g,false);
     }
 
+    @FXML
+    public void weightedClicked(){
+        weightField.setVisible(true);
+    }
+
+    /**
+     * Generates a path based on a selected search algorithm
+     */
+    @FXML
+    public void generatePath(){
+
+        if(uniRadio.isSelected()){
+            Search test = new Search(g, 0);
+            test.generatePath();
+        }
+        if(aRadio.isSelected()){
+            Search test = new Search(g, 1);
+            test.generatePath();
+        }
+        if(weightedRadio.isSelected()){
+            double weight = Double.parseDouble(weightField.getText());
+            Search test = new Search(g, weight);
+            test.generatePath();
+        }
+
+        buildGrid(g,true);
+    }
 
 }
