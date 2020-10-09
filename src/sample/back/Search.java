@@ -9,7 +9,7 @@ public class Search {
     public Grid map;
     Search(Grid map){
         this.map = map;
-        this.weight = 0;
+        this.weight = 1;
     }
 
     Search(Grid map, double weight){
