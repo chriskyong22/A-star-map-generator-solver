@@ -316,7 +316,7 @@ public class Grid{
                     while(y >= columnSize - 1){
                         y--;
                     }
-                    break;   
+                    break;
                 case 1: //Bottom
                     x = rowSize - 1;
                     y = (int) ((Math.random() * columnSize) + 1);
@@ -328,14 +328,14 @@ public class Grid{
                     x = (int) ((Math.random() * rowSize) + 1);
                     while(x >= rowSize - 1){
                         x--;
-                    } 
+                    }
                     y = 0;
                     break;
                 case 3: //Right
                     x = (int) ((Math.random() * rowSize) + 1);
                     while(x >= rowSize - 1){
                         x--;
-                    } 
+                    }
                     y = columnSize - 1;
                     break;
                 default: System.out.println("Error: quadrantic unknown");
@@ -376,7 +376,7 @@ public class Grid{
         ArrayList<Point> neighbors = new ArrayList<Point>();
         for(int posX = x - 1; posX <= x + 1; posX++){
             for(int posY = y - 1; posY <= y + 1; posY++){
-                if(!checkOutOfBounds(posX, posY) && (posX != x || posY != y)){
+                if(!checkOutOfBounds(posX, posY) && (posX != x || posY != y) && map[posX][posY].getType() != '0'){
                     neighbors.add(new Point(posX, posY));
                 }
             }
@@ -435,6 +435,10 @@ public class Grid{
             }
             numberOfPoints++; 
         }
+    }
+
+    Cell getCell(int x, int y){
+        return map[x][y];
     }
 
     void printGrid(){

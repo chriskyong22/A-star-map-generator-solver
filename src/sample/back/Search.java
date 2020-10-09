@@ -5,20 +5,65 @@ import java.util.PriorityQueue;
 import java.awt.Point;
 
 public class Search {
-    ArrayList<Point> expanded;
-    PriorityQueue<Point> fringe;
-
+    private double weight;
+    public Grid map;
     Search(Grid map){
-        //regular A*
-
+        this.map = map;
+        this.weight = 0;
     }
 
     Search(Grid map, double weight){
-        //search with different weight
-        //need to get weight from user?
-
+        this.map = map;
+        this.weight = weight;
     }
 
+    ArrayList<Cell> generatePath(){
+        ArrayList<Cell> tested = new ArrayList<Cell>();
+        PriorityQueue<Cell> fringe = new PriorityQueue<Cell>();
+        Point start = map.getStart();
+        Point goal = map.getEndVertex();
+        Cell goalCell = map.getCell(goal.x, goal.y);
+        //Initialization of A*
+        map.getCell(start.x, start.y).setParent(map.getCell(start.x, start.y));
+        map.getCell(start.x, start.y).setCost(0);
+        System.out.println("Point [X:" + start.x + " Y:"+ start.y + "]");
+        fringe.add(map.getCell(start.x, start.y));
+        boolean found = false;
+        while(!fringe.isEmpty()){
+            Cell current = fringe.poll();
+            if(current.getX() == goal.x && current.getY() == goal.y){
+                found = true;
+                break;
+            }
+            tested.add(current);
+
+            ArrayList<Point> neighbors = map.getNeighbors(current.getX(), current.getY());
+            for(Point neighborPoint : neighbors){
+                Cell neighbor = map.getCell(neighborPoint.x, neighborPoint.y);
+                if(tested.contains(neighbor)){
+                    continue;
+                }
+                double g = current.getCost() + computeCost(current, neighbor);
+                double h = computeHeuristic(neighbor, goalCell);
+                double f = computeFullCost(weight, h, g);
+                if(neighbor.getCost() > f){
+                    neighbor.setCost(f);
+                    neighbor.setParent(current);
+                    if(fringe.contains(neighbor)){
+                        fringe.remove(neighbor);
+                    }
+                    fringe.add(neighbor);
+                }
+            }
+        }
+        if(found){
+            System.out.println("Successfully found a path from start to goal");
+            return tested;
+        }else{
+            System.out.println("Failure: could not find a path from start to goal");
+            return null;
+        }
+    }
     /**
      * Compute the full cost f(x) with a given weight (f(x) = h(x) * weight + g(x))
      * @param weight The weight of the heuristic 
@@ -41,7 +86,7 @@ public class Search {
 
     double computeHeuristic(Cell start, Cell goal){
         double distance = 0;
-        //CURRENTLY using the heuristic .25 * Euclidean distance,
+        //CURRENTLY using the heuristic: .25 * Euclidean distance,
         // not sure how to make the heuristic interchangable without function pointers atm
         double distanceX = Math.abs(start.getX() - goal.getX());
         double distanceY = Math.abs(start.getY() - goal.getY());
@@ -51,6 +96,7 @@ public class Search {
         return distance;
     }
 
+    //I don't think this is needed, I think computeCost already covers this case
     double computeHeuristic(Cell start, Cell goal, double weight){
         double distance = 0;
         //

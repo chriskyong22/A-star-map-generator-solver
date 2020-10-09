@@ -9,7 +9,7 @@ public class Cell implements Comparable<Cell> {
 
     Cell(int x, int y){
         cellType = '1';
-        cost = 0;
+        cost = Integer.MAX_VALUE;
         parent = null;
         this.x = x;
         this.y = y;
@@ -17,7 +17,7 @@ public class Cell implements Comparable<Cell> {
 
     Cell(char type, int x, int y){
         this.cellType = type;
-        cost = 0;
+        cost = Integer.MAX_VALUE;
         parent = null;
         this.x = x;
         this.y = y;
@@ -72,12 +72,23 @@ public class Cell implements Comparable<Cell> {
         return cost;
     }
 
+    @Override
     public int compareTo(Cell other){
-        if(other.x == this.x && other.y == this.y){
+        if(this.cost == other.cost){
             return 0;
+        }else if(this.cost > other.cost){
+            return 1;
         }else{
             return -1;
         }
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if(other == null || !(other instanceof Cell)){
+            return false;
+        }
+        return (this.x == ((Cell) other).getX() && this.y == ((Cell) other).getY());
     }
 
     void setType(char type){
