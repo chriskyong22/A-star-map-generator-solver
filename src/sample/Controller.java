@@ -139,9 +139,8 @@ public class Controller {
     @FXML
     public void setGridGoal(){
         String input = goalField.getText();
-        int goalX = Character.getNumericValue(input.charAt(0));
-        int goalY = Character.getNumericValue(input.charAt(2));
-
+        int goalX = Integer.parseInt(input.substring(0, input.indexOf(',')));
+        int goalY = Integer.parseInt(input.substring(input.indexOf(',') + 1));
 
         g.setEnd(goalX,goalY);
         buildGrid(g);
@@ -153,9 +152,8 @@ public class Controller {
     @FXML
     public void setGridStart(){
         String input = startField.getText();
-        int startX = Character.getNumericValue(input.charAt(0));
-        int startY = Character.getNumericValue(input.charAt(2));
-
+        int startX = Integer.parseInt(input.substring(0, input.indexOf(',')));
+        int startY = Integer.parseInt(input.substring(input.indexOf(',') + 1));
         g.setStart(startX,startY);
         buildGrid(g);
     }
