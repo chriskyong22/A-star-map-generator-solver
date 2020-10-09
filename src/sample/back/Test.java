@@ -19,14 +19,18 @@ public class Test{
         newMap.printHardToTraverse();
         newMap.writeToFile("map4.txt");
          */
-        Search test = new Search(newMap);
+        Search test = new Search(newMap, 1);
         ArrayList<Cell> temp = test.generatePath();
-        Cell last = temp.get(temp.size() - 1);
-        while(!last.getParent().equals(last)) {
-            last.setType('!');
-            last = last.getParent();
+
+        Point goal = newMap.getEndVertex();
+        Cell goalCell = newMap.getCell(goal.x, goal.y);
+        while(!goalCell.getParent().equals(goalCell)) {
+            goalCell.setType('!');
+            goalCell = goalCell.getParent();
         }
         newMap.printGrid();
+        System.out.println(newMap.getCell(goal.x, goal.y).getCost() +  "|" + temp.size());
+        System.out.println("The cost: " + test.calculatePathCost());
        // Grid newMap = new Grid("map3.txt");
         //newMap.printGrid();
     }

@@ -22,18 +22,19 @@ public class Search {
         PriorityQueue<Cell> fringe = new PriorityQueue<Cell>();
         Point start = map.getStart();
         Point goal = map.getEndVertex();
+        Cell startCell = map.getCell(start.x, start.y);
         Cell goalCell = map.getCell(goal.x, goal.y);
+
         //Initialization of A*
-        map.getCell(start.x, start.y).setParent(map.getCell(start.x, start.y));
-        map.getCell(start.x, start.y).setCost(0);
-        System.out.println("Point [X:" + start.x + " Y:"+ start.y + "]");
+        startCell.setParent(map.getCell(start.x, start.y));
+        startCell.setCost(0);
         fringe.add(map.getCell(start.x, start.y));
-        boolean found = false;
+
         while(!fringe.isEmpty()){
             Cell current = fringe.poll();
             if(current.getX() == goal.x && current.getY() == goal.y){
-                found = true;
-                break;
+                System.out.println("Successfully found a path from start to goal");
+                return tested;
             }
             tested.add(current);
 
@@ -56,13 +57,8 @@ public class Search {
                 }
             }
         }
-        if(found){
-            System.out.println("Successfully found a path from start to goal");
-            return tested;
-        }else{
-            System.out.println("Failure: could not find a path from start to goal");
-            return null;
-        }
+        System.out.println("Failure: could not find a path from start to goal");
+        return null;
     }
     /**
      * Compute the full cost f(x) with a given weight (f(x) = h(x) * weight + g(x))
@@ -73,15 +69,6 @@ public class Search {
      */
     double computeFullCost(double weight, double heuristic, double costFromStart){
         return (heuristic * weight) + costFromStart;
-    }
-    /**
-     * Compute full cost f(x) with no given weight of the heuristic
-     * @param heuristic The value of the heuristic
-     * @param costFromStart Cost from start to this cell
-     * @return full cost
-     */
-    double computeFullCost(double heuristic, double costFromStart){
-        return heuristic + costFromStart;
     }
 
     double computeHeuristic(Cell start, Cell goal){
@@ -109,7 +96,17 @@ public class Search {
 
         return distance;
     }
-
+    double calculatePathCost(){
+        Point goal = map.getEndVertex();
+        Cell current = map.getCell(goal.x, goal.y);
+        Cell end = map.getCell(goal.x, goal.y);
+        double cost = end.getCost();
+        while(!current.getParent().equals(current)){
+            cost -= weight * computeHeuristic(current, end);
+            current = current.getParent();
+        }
+        return cost;
+    }
 
     /**
      * Compute the cost between traversing between the two ADJACENT cells 
@@ -135,6 +132,7 @@ public class Search {
          *  Multiply the cost by (.25)
          */
         if(start.isBlocked() || goal.isBlocked()){
+            System.out.println("ERROR: This case should not possible");
             return -1;
         }
         double cost = 0;

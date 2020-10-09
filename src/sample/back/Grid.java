@@ -360,7 +360,7 @@ public class Grid{
         return x < 0 || x >= rowSize || y < 0 || y >= columnSize;
     }
     /**
-     * Get the neighbors of a designed point 
+     * Get the neighbors of a designed point (ignoring blocked cells)
      * @param x
      * @param y
      * @return null if invalid point, otherwise an Arraylist of points representing the valid neighbors
@@ -376,7 +376,7 @@ public class Grid{
         ArrayList<Point> neighbors = new ArrayList<Point>();
         for(int posX = x - 1; posX <= x + 1; posX++){
             for(int posY = y - 1; posY <= y + 1; posY++){
-                if(!checkOutOfBounds(posX, posY) && (posX != x || posY != y) && map[posX][posY].getType() != '0'){
+                if(!checkOutOfBounds(posX, posY) && (posX != x || posY != y) && !map[posX][posY].isBlocked()){
                     neighbors.add(new Point(posX, posY));
                 }
             }
