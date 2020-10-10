@@ -2,8 +2,10 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<SplitPane dividerPositions="0.2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="594.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<SplitPane dividerPositions="0.2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="866.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="156.0">
          <children>
@@ -27,6 +29,27 @@
             <TextField fx:id="weightField" layoutX="27.0" layoutY="520.0" prefHeight="26.0" prefWidth="127.0" promptText="Enter Weight" visible="false" />
             <Button fx:id="pathButton" layoutX="49.0" layoutY="553.0" mnemonicParsing="false" onMouseClicked="#generatePath" text="Generate Path" />
             <RadioButton fx:id="uniRadio" layoutX="33.0" layoutY="492.0" mnemonicParsing="false" text="Uniform A*" toggleGroup="$algoGroup" />
+            <Circle fill="WHITE" layoutX="21.0" layoutY="612.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="41.0" layoutY="604.0" text="Regular Unblocked" />
+            <Circle layoutX="21.0" layoutY="640.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="42.0" layoutY="631.0" text="Blocked" />
+            <Circle fill="#a7a7a7" layoutX="22.0" layoutY="666.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="42.0" layoutY="658.0" text="Hard to Traverse" />
+            <Circle fill="#8bbdf5" layoutX="20.0" layoutY="692.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="40.0" layoutY="684.0" text="Regular Highway/River" />
+            <Circle fill="#071dac" layoutX="20.0" layoutY="717.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="40.0" layoutY="709.0" prefHeight="18.0" prefWidth="149.0" text="Hard to Traverse Highway/River">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Circle fill="#37ff00" layoutX="20.0" layoutY="744.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="40.0" layoutY="736.0" text="Start Position" />
+            <Circle fill="RED" layoutX="22.0" layoutY="770.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="42.0" layoutY="762.0" text="Goal Position" />
+            <Circle fill="#eeff00" layoutX="22.0" layoutY="796.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="42.0" layoutY="788.0" text="Path" />
+            <Label layoutX="13.0" layoutY="579.0" text="Color Coding:" />
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>

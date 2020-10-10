@@ -85,7 +85,7 @@ public class Controller {
      * Blocked Cell - BLACK
      * Regular Unblocked Cell - White
      * Hard to Traverse - Gray
-     * Regular Cell w/ Highway - Blue
+     * Regular Cell w/ Highway - Light Blue
      * Hard to Traverse w/ Highway - Dark Blue
      * Start - Lime Green
      * Goal - Red
@@ -143,6 +143,7 @@ public class Controller {
                         cells[i][j].setFill(Color.DARKBLUE);
                         break;
                 }
+                cells[i][j].setStroke(Color.BLACK);
                 gridPane.getChildren().add(cells[i][j]);
             }
         }
@@ -151,7 +152,7 @@ public class Controller {
         if (b) {
             Cell goalCell = g.getCell(goalX, goalY);
             while (!goalCell.getParent().equals(goalCell)) {
-                cells[goalCell.getY()][goalCell.getX()].setFill(Color.YELLOWGREEN);
+                cells[goalCell.getY()][goalCell.getX()].setFill(Color.YELLOW);
                 goalCell = goalCell.getParent();
             }
         }
