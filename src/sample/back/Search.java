@@ -103,7 +103,17 @@ public class Search {
                         if (goalCell.getCost(heuristicSelected) < Integer.MAX_VALUE){
                             System.out.println("Successfully found a path by heuristic: " + heuristicSelected + ".");
                             System.out.println("The cost of " + goalCell.getX() + " " + goalCell.getY() + ": " + goalCell.getCost(heuristicSelected));
-                            return heuristicSelected;
+                            double lowestCost = goalCell.getCost(heuristicSelected);
+                            int lowest = heuristicSelected;
+                            for(int heuristic = 0; heuristic < numOfHeuristics; heuristic++){
+                                if(lowestCost > goalCell.getCost(heuristic)){
+                                    lowest = heuristic;
+                                    lowestCost = goalCell.getCost(heuristic);
+                                }
+                            }
+                            System.out.println("Successfully found a path by heuristic: " + lowest + ".");
+                            System.out.println("The cost of " + goalCell.getX() + " " + goalCell.getY() + ": " + goalCell.getCost(lowest));
+                            return lowest;
                         }
                     }else {
                         Cell s = open_table[heuristicSelected].peek();
