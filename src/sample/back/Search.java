@@ -18,11 +18,25 @@ public class Search {
         this.weight = weight;
     }
 
-     void Keys(){
-        return;
+    void Key(Cell start, Cell goal, Cell current, int i){
+        return; //g(s_i) + (int) (weight * computeHeuristic(current, goal))
     }
 
-    void ExpandState(){
+    void ExpandState(PriorityQueue<Cell> open_table[], PriorityQueue<Cell> close_table[], Cell s, int i){
+        ArrayList<Point> neighbors = map.getNeighbors(s.getX(), s.getY());
+        Cell[] neighborsList = new Cell[8];
+        int count = 0;
+        for(Point neighborPoint : neighbors) {
+            Cell neighbor = map.getCell(neighborPoint.x, neighborPoint.y);
+            neighborsList[count] = neighbor;
+            count++;
+        }
+
+        if(open_table[i].remove(s)){
+            for(int j = 0; j < neighborsList.length; j++){
+
+            }
+        }
         return;
     }
     public void manyHeuristic(int n){

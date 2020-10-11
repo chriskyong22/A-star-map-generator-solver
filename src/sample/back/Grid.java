@@ -16,6 +16,7 @@ public class Grid{
     public Point endVertex;
     public Point[] hardToTraverse;
     public Cell[][] map;
+
     public Grid(){
         this.map = new Cell[rowSize][columnSize];
         for(int x = 0; x < rowSize; x++){
@@ -346,6 +347,7 @@ public class Grid{
         }
         return new Point(x,y);
     }
+
     /**
      * Checks if a point is on the boundaries or past the boundaries 
      * @param x 
@@ -359,6 +361,7 @@ public class Grid{
     boolean checkOutOfBounds(int x, int y){
         return x < 0 || x >= rowSize || y < 0 || y >= columnSize;
     }
+
     /**
      * Get the neighbors of a designed point (ignoring blocked cells)
      * @param x
@@ -488,6 +491,7 @@ public class Grid{
             return this.map[x][y].getType();
         }
     }
+
     public Point getStart(){
         return startVertex;
     }
