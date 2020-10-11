@@ -213,13 +213,16 @@ public class Search {
                 distance = distanceX + distanceY;
                 distance *= .25;
                 break;
-            case 2: //Diagonal Distance
+            case 2: //Diagonal Distance * .25
                 distance = 1 * (distanceX + distanceY) + ((Math.sqrt(2) - 2 * 1) * Math.min(distanceX, distanceY));
                 distance *= .25;
                 break;
-            case 3: //Euclidian distance squared
-                distance = (distanceX * distanceX) + (distanceY * distanceY);
+            case 3: //Chess Board Distance * .25
+                distance = (distanceX + distanceY) - 1 * Math.min(distanceX, distanceY);
                 distance *= .25;
+                break;
+            case 4: //Euclidian distance (without .25)
+                distance = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY));
                 break;
             default:
                 System.out.println("Heuristic was not selected, defaulting to uniform search where h = 0");
