@@ -60,7 +60,7 @@ public class Controller {
         g = new Grid();
         g.generateGrid();
         g.writeToFile("map4.txt");
-        buildGrid(g,false);
+        buildGrid(g,false, -1);
 
     }
 
@@ -74,7 +74,7 @@ public class Controller {
         if (filepath.isEmpty()) return;
 
         g = new Grid(filepath);
-        buildGrid(g,false);
+        buildGrid(g,false, -1);
 
 
     }
@@ -92,7 +92,7 @@ public class Controller {
      * Path - Yellow
      * @param g - Input Grid object
      */
-    public void buildGrid(Grid g,boolean b){
+    public void buildGrid(Grid g, boolean b, int heuristicSelection){
         //Clear Pane
         gridPane.getChildren().clear();
 
@@ -123,7 +123,10 @@ public class Controller {
                 int finalI = i;
                 int finalJ = j;
                 cells[i][j].setOnMouseClicked(event -> {
-                    infoArea.setText("[" + finalJ + ":" + finalI + "]" + "\n" + "Cell Cost: " + g.map[finalJ][finalI].getCost(0) + "\n" + "HCost is: " + g.map[finalJ][finalI].getHCost(0));
+                    infoArea.setText("[" + finalI + ":" + finalJ + "]" + "\n");
+                    for(int heuristicSelected = 0; heuristicSelected < g.map[finalJ][finalI].getHCostSize(); heuristicSelected++){
+                        infoArea.appendText("For Heuristic " + heuristicSelected + "\nCell Cost: " + g.map[finalJ][finalI].getCost(heuristicSelected) + "\n" + "HCost is: " + g.map[finalJ][finalI].getHCost(heuristicSelected));
+                    }
                 });
 
                 switch(g.map[j][i].getType()){
@@ -167,10 +170,10 @@ public class Controller {
     @FXML
     public void setGridGoal(){
         String input = goalField.getText();
-        int goalX = Integer.parseInt(input.substring(0, input.indexOf(',')));
-        int goalY = Integer.parseInt(input.substring(input.indexOf(',') + 1));
+        int goalY = Integer.parseInt(input.substring(0, input.indexOf(',')));
+        int goalX = Integer.parseInt(input.substring(input.indexOf(',') + 1));
         g.setEnd(goalX,goalY);
-        buildGrid(g,false);
+        buildGrid(g,false, -1);
     }
 
     /**
@@ -179,10 +182,10 @@ public class Controller {
     @FXML
     public void setGridStart(){
         String input = startField.getText();
-        int startX = Integer.parseInt(input.substring(0, input.indexOf(',')));
-        int startY = Integer.parseInt(input.substring(input.indexOf(',') + 1));
+        int startY = Integer.parseInt(input.substring(0, input.indexOf(',')));
+        int startX = Integer.parseInt(input.substring(input.indexOf(',') + 1));
         g.setStart(startX,startY);
-        buildGrid(g,false);
+        buildGrid(g,false, -1);
     }
 
     @FXML
@@ -198,18 +201,20 @@ public class Controller {
         if(uniRadio.isSelected()){
             Search test = new Search(g, 0);
             test.generateNormalPath();
+            buildGrid(g,true, 0);
         }
         if(aRadio.isSelected()){
             Search test = new Search(g, 1);
             test.generateNormalPath();
+            buildGrid(g,true, 0);
         }
         if(weightedRadio.isSelected()){
             double weight = Double.parseDouble(weightField.getText());
             Search test = new Search(g, weight);
             test.generateNormalPath();
+            buildGrid(g,true, 0);
         }
 
-        buildGrid(g,true);
     }
 
 }

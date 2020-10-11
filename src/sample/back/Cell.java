@@ -105,6 +105,22 @@ public class Cell implements Comparable<Cell> {
         return cost[i];
     }
 
+    public int getHCostSize(){
+        return this.hcost.length;
+    }
+
+    public int getParentSize(){
+        return this.parent.length;
+    }
+
+    public int getCostSize(){
+        return this.cost.length;
+    }
+
+    public int getVisitedSize(){
+        return this.visited.length;
+    }
+
     public void setHCost(double value, int i){
         this.hcost[i] = value;
     }
