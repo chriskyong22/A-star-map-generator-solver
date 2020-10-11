@@ -27,7 +27,6 @@ public class Test{
         Point goal = newMap.getEndVertex();
         Cell goalCell = newMap.getCell(goal.x, goal.y);
         while(!goalCell.getParent(0).equals(goalCell)) {
-            goalCell.setType('!');
             goalCell = goalCell.getParent(0);
         }
         newMap.printGrid();
@@ -35,6 +34,10 @@ public class Test{
        // Grid newMap = new Grid("map3.txt");
         //newMap.printGrid();
         int x = test.generateSequentialPath(2);
+        goalCell = newMap.getCell(goal.x, goal.y);
+        System.out.println("Cost of Heuristic " + x + ": " + goalCell.getCost(x));
+        x = test.generateSequentialPath(4);
+        goalCell = newMap.getCell(goal.x, goal.y);
         System.out.println("Cost of Heuristic " + x + ": " + goalCell.getCost(x));
     }
 }

@@ -89,7 +89,6 @@ public class Search {
             double value = Key(startCell, goalCell, heuristicSelected, w1);
             startCell.setHCost(value, heuristicSelected);
             open_table[heuristicSelected].add(startCell);
-
         }
 
         while (open_table[0].peek().getHCost(0) < Integer.MAX_VALUE){
@@ -98,6 +97,7 @@ public class Search {
                     if (goalCell.getCost(heuristicSelected) <= open_table[heuristicSelected].peek().getHCost(heuristicSelected)){
                         if (goalCell.getCost(heuristicSelected) < Integer.MAX_VALUE){
                             System.out.println("Successfully found a path by heuristic: " + heuristicSelected + ".");
+                            System.out.println("The cost of " + goalCell.getX() + " " + goalCell.getY() + ": " + goalCell.getCost(heuristicSelected));
                             return heuristicSelected;
                         }
                     }else {
@@ -110,11 +110,11 @@ public class Search {
                     if (goalCell.getCost(0) <= open_table[0].peek().getHCost(0)){
                         if (goalCell.getCost(0) < Integer.MAX_VALUE){
                             System.out.println("Successfully found a path by heuristic: 0.");
+                            System.out.println("The cost of " + goalCell.getX() + " " + goalCell.getY() + ": " + goalCell.getCost(0));
                             return 0;
                         }
                     }else{
                         Cell s = open_table[0].peek();
-                        //Is the heuristic suppose to be 0 or heuristicSelected? not sure tbh
                         s.setVisited(0, true);
                         ExpandState(open_table, close_table, s, 0, goalCell, w1);
                         close_table[0].add(s);
@@ -208,15 +208,25 @@ public class Search {
         double distanceY = Math.abs(start.getY() - goal.getY());
 
         switch(heuristicSelection){
-            case 1: //Euclidian distance  * .25
+            case 0: //Euclidian distance  * .25
                 distance = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY));
                 distance *= .25;
                 break;
-            case 2: //Manhattan distance * .25
+            case 1: //Manhattan distance * .25
                 distance = distanceX + distanceY;
                 distance *= .25;
                 break;
+            case 2: //Diagonal Distance
+                distance = 1 * (distanceX + distanceY) + ((Math.sqrt(2) - 2 * 1) * Math.min(distanceX, distanceY));
+                distance *= .25;
+                break;
+            case 3: //Euclidian distance squared
+                distance = (distanceX * distanceX) + (distanceY * distanceY);
+                distance *= .25;
+                break;
             default:
+                System.out.println("Heuristic was not selected, defaulting to uniform search where h = 0");
+                break;
         }
         return distance;
     }
