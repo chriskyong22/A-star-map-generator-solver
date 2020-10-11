@@ -57,16 +57,14 @@ public class Search {
 
     }
 
-    public int generateSequentialPath(int numOfHeuristics){
+    public int generateSequentialPath(int numOfHeuristics, double w1, double w2){
         if(numOfHeuristics <= 0){
             return -1;
         }
         if(numOfHeuristics == 1){
-            generateNormalPath();
+            generateNormalPath(0);
             return 0;
         }
-        double w1 = 1.0;
-        double w2 = 3.0;
 
         Point start = map.getStart();
         Point goal = map.getEndVertex();
@@ -134,7 +132,7 @@ public class Search {
     }
 
 
-    public ArrayList<Cell> generateNormalPath(){
+    public ArrayList<Cell> generateNormalPath(int heuristicSelection){
         map.setParentSize(1);
         map.setCostSize(1);
         map.setHCostSize(1);
@@ -149,7 +147,7 @@ public class Search {
         //Initialization of A*
         startCell.setParent(map.getCell(start.x, start.y), 0);
         startCell.setCost(0, 0);
-        startCell.setHCost(computeHeuristic(startCell, goalCell), 0);
+        startCell.setHCost(computeHeuristic(startCell, goalCell, heuristicSelection), 0);
         fringe.add(map.getCell(start.x, start.y));
 
         while(!fringe.isEmpty()){
@@ -174,7 +172,7 @@ public class Search {
                 double g = current.getCost(0) + computeCost(current, neighbor);
                 if(neighbor.getCost(0) > g){
                     neighbor.setCost(g,0);
-                    double h = computeHeuristic(neighbor, goalCell);
+                    double h = computeHeuristic(neighbor, goalCell, heuristicSelection);
                     double f = computeFullCost(weight, h, g);
                     neighbor.setHCost(f, 0);
                     neighbor.setParent(current, 0);
@@ -199,19 +197,7 @@ public class Search {
         return (heuristic * weight) + costFromStart;
     }
 
-    double computeHeuristic(Cell start, Cell goal){
-        double distance = 0;
-        //CURRENTLY using the heuristic: .25 * Euclidean distance,
-        // not sure how to make the heuristic interchangable without function pointers atm
-        double distanceX = Math.abs(start.getX() - goal.getX());
-        double distanceY = Math.abs(start.getY() - goal.getY());
-        distance = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY));
-        distance *= .25;
-
-        return distance;
-    }
-
-    // Heuristic computation for A* sequential
+    // Heuristic computation
     double computeHeuristic(Cell start, Cell goal, int heuristicSelection){
         double distance = 0;
 

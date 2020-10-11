@@ -23,7 +23,7 @@ public class Test{
         newMap.writeToFile("map1.txt");
         */
         Search test = new Search(newMap, 1);
-        ArrayList<Cell> temp = test.generateNormalPath();
+        ArrayList<Cell> temp = test.generateNormalPath(0);
         Point goal = newMap.getEndVertex();
         Cell goalCell = newMap.getCell(goal.x, goal.y);
         while(!goalCell.getParent(0).equals(goalCell)) {
@@ -33,7 +33,7 @@ public class Test{
         System.out.println("The cost is: " + newMap.getCell(goal.x, goal.y).getCost(0) +  " | Found in: " + temp.size() + " moves");
        // Grid newMap = new Grid("map3.txt");
         //newMap.printGrid();
-        int x = test.generateSequentialPath(1);
+        int x = test.generateSequentialPath(1, 1, 3);
         goalCell = newMap.getCell(goal.x, goal.y);
         System.out.println("Cost of Heuristic " + x + ": " + goalCell.getCost(x));
         //x = test.generateSequentialPath(4);

@@ -244,23 +244,26 @@ public class Controller {
     public void generatePath(){
         if(uniRadio.isSelected()){
             Search test = new Search(g, 0);
-            test.generateNormalPath();
+            test.generateNormalPath(0);
             buildGrid(g,true, 0);
         }
         if(aRadio.isSelected()){
             Search test = new Search(g, 1);
-            test.generateNormalPath();
+            test.generateNormalPath(0);
             buildGrid(g,true, 0);
         }
         if(weightedRadio.isSelected()){
             double weight = Double.parseDouble(weightField.getText());
             Search test = new Search(g, weight);
-            test.generateNormalPath();
+            test.generateNormalPath(0);
             buildGrid(g,true, 0);
         }
         if(seqRadio.isSelected()){
+            double w1 = Double.parseDouble(weightField.getText());
+            double w2 = Double.parseDouble(weightField2.getText());
+            int numOfHeuristics = Integer.parseInt();
             Search test = new Search(g, 1);
-            int selected = test.generateSequentialPath(4);
+            int selected = test.generateSequentialPath(numOfHeuristics, w1,w2);
             buildGrid(g, true, selected);
         }
     }
