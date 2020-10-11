@@ -15,6 +15,7 @@ import sample.back.Cell;
 
 import java.awt.*;
 import java.awt.Label;
+import java.util.ArrayList;
 
 public class Controller {
 
@@ -250,27 +251,46 @@ public class Controller {
 
         if(uniRadio.isSelected()){
             Search test = new Search(g, 0);
-            test.generateNormalPath(0);
-            buildGrid(g,true, 0);
+            ArrayList<Cell> temp = test.generateNormalPath(0);
+            if(temp == null){
+                infoArea.setText("Path could not be generated!");
+            }else{
+                buildGrid(g,true, 0);
+            }
         }
+
         if(aRadio.isSelected()){
             Search test = new Search(g, 1);
-            test.generateNormalPath(heuristicSelected);
-            buildGrid(g,true, 0);
+            ArrayList<Cell> temp = test.generateNormalPath(heuristicSelected);
+            if(temp == null){
+                infoArea.setText("Path could not be generated!");
+            }else {
+                buildGrid(g, true, 0);
+            }
         }
+
         if(weightedRadio.isSelected()){
             double weight = Double.parseDouble(weightField.getText());
             Search test = new Search(g, weight);
-            test.generateNormalPath(heuristicSelected);
-            buildGrid(g,true, 0);
+            ArrayList<Cell> temp = test.generateNormalPath(heuristicSelected);
+            if(temp == null){
+                infoArea.setText("Path could not be generated!");
+            }else {
+                buildGrid(g, true, 0);
+            }
         }
+
         if(seqRadio.isSelected()){
             double w1 = Double.parseDouble(weightField.getText());
             double w2 = Double.parseDouble(weightField2.getText());
             int numOfHeuristics = Integer.parseInt(selection);
             Search test = new Search(g, 1);
             int selected = test.generateSequentialPath(numOfHeuristics, w1,w2);
-            buildGrid(g, true, selected);
+            if(selected == -1){
+                infoArea.setText("Path could not be generated!");
+            }else{
+                buildGrid(g, true, selected);
+            }
         }
     }
 
