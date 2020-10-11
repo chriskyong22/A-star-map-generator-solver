@@ -25,6 +25,9 @@ public class Search {
     }
 
     void ExpandState(PriorityQueue<Cell> open_table[], PriorityQueue<Cell> close_table[], Cell s, int i){
+        
+
+
         ArrayList<Point> neighbors = map.getNeighbors(s.getX(), s.getY());
         Cell[] neighborsList = new Cell[neighbors.size()];
         int count = 0;
@@ -58,7 +61,6 @@ public class Search {
 
         PriorityQueue<Cell> open_table[] = new PriorityQueue[numOfHeuristics];
         PriorityQueue<Cell> close_table[] = new PriorityQueue[numOfHeuristics];
-
 
         for (int heuristicSelected = 0; heuristicSelected < numOfHeuristics; heuristicSelected++) {
             int finalI = heuristicSelected;
@@ -105,30 +107,26 @@ public class Search {
                             return heuristicSelected;
                         }
                     }else {
-                        //s open .top()
-                        ExpandState();
-                        //insert s into closed
-
+                        Cell s = open_table[heuristicSelected].peek();
+                        ExpandState(open_table, close_table, s, heuristicSelected);
+                        close_table[heuristicSelected].add(s);
                     }
-
                 }else {
-                    if ( <=open_table[0].peek().getCost()){
-                        if ( < Integer.MAX_VALUE){
-                            //terminate and return path pointed by bp0(sgoal)
-                            return;
+                    if (goalCell.getCost(0) <= open_table[0].peek().getHCost(0)){
+                        if (goalCell.getCost(0) < Integer.MAX_VALUE){
+                            System.out.println("Successfully found a path by heuristic: 0.");
+                            return 0;
                         }
-                    }else {
-                        //s open .top()
-                        ExpandState();
-                        //insert s into closed
+                    }else{
+                        Cell s = open_table[0].peek();
+                        ExpandState(open_table, close_table, s, 0);
+                        close_table[0].add(s);
                     }
                 }
             }
-
         }
-
-
-
+        System.out.println("FAILURE: could not find a path given all the heuristics");
+        return -1;
     }
 
 
