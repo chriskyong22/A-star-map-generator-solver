@@ -125,7 +125,7 @@ public class Controller {
                 cells[i][j].setOnMouseClicked(event -> {
                     infoArea.setText("[" + finalI + ":" + finalJ + "]" + "\n");
                     for(int heuristicSelected = 0; heuristicSelected < g.map[finalJ][finalI].getHCostSize(); heuristicSelected++){
-                        infoArea.appendText("For Heuristic " + heuristicSelected + "\nCell Cost: " + g.map[finalJ][finalI].getCost(heuristicSelected) + "\n" + "HCost is: " + g.map[finalJ][finalI].getHCost(heuristicSelected));
+                        infoArea.appendText("For Heuristic " + heuristicSelected + "\nCell Cost: " + g.map[finalJ][finalI].getCost(heuristicSelected) + "\n" + "HCost is: " + g.map[finalJ][finalI].getHCost(heuristicSelected) + "\n");
                     }
                 });
 
@@ -154,9 +154,10 @@ public class Controller {
         //Draw Path
         if (b) {
             Cell goalCell = g.getCell(goalX, goalY);
-            while (!goalCell.getParent(0).equals(goalCell)) {
+            Cell startCell = g.getCell(startX, startY);
+            while (startCell != goalCell) {
                 cells[goalCell.getY()][goalCell.getX()].setFill(Color.YELLOW);
-                goalCell = goalCell.getParent(0);
+                goalCell = goalCell.getParent(heuristicSelection);
             }
         }
         //Color start and end pos
@@ -214,7 +215,11 @@ public class Controller {
             test.generateNormalPath();
             buildGrid(g,true, 0);
         }
-
+        if(seqRadio.isSelected()){
+            Search test = new Search(g, 1);
+            int selected = test.generateSequentialPath(4);
+            buildGrid(g, true, selected);
+        }
     }
 
 }
