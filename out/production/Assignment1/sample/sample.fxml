@@ -2,16 +2,58 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<SplitPane dividerPositions="0.299" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="883.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
   <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="156.0">
          <children>
-            <Button id="importButton" fx:id="importButton" layoutX="52.0" layoutY="132.0" mnemonicParsing="false" onMouseClicked="#importME" text="Import" />
-            <Button id="generateButton" fx:id="generateButton" layoutX="52.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#generateME" text="Generate" />
-            <TextField id="infoField" fx:id="infoField" layoutX="9.0" layoutY="348.0" prefHeight="26.0" prefWidth="86.0" promptText="x,y" />
-            <Button id="infoButton" fx:id="infoButton" layoutX="102.0" layoutY="348.0" mnemonicParsing="false" text="Get Info" />
-            <TextField id="pathField" fx:id="pathField" layoutX="13.0" layoutY="98.0" promptText="File Path" />
+            <Button id="importButton" fx:id="importButton" layoutX="55.0" layoutY="109.0" mnemonicParsing="false" onMouseClicked="#importME" text="Import Map" />
+            <Button id="generateButton" fx:id="generateButton" layoutX="52.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#generateME" text="Generate Map" />
+            <TextField id="pathField" fx:id="pathField" layoutX="17.0" layoutY="75.0" promptText="File Path" />
+            <Button fx:id="startButton" layoutX="106.0" layoutY="146.0" mnemonicParsing="false" onMouseClicked="#setGridStart" text="Set Start" />
+            <Button fx:id="goalButton" layoutX="104.0" layoutY="181.0" mnemonicParsing="false" onMouseClicked="#setGridGoal" text="Set Goal" />
+            <TextField id="goalField" fx:id="goalField" layoutX="9.0" layoutY="181.0" prefHeight="26.0" prefWidth="86.0" promptText="x,y" />
+            <TextField id="startField" fx:id="startField" layoutX="9.0" layoutY="146.0" prefHeight="26.0" prefWidth="86.0" promptText="x,y" />
+            <TextArea fx:id="infoArea" editable="false" layoutX="16.0" layoutY="285.0" prefHeight="133.0" prefWidth="136.0" />
+            <Label layoutX="22.0" layoutY="267.0" text="Cell Info:" />
+            <RadioButton fx:id="aRadio" layoutX="28.0" layoutY="466.0" mnemonicParsing="false" onMouseClicked="#aStarClicked" text="A*">
+               <toggleGroup>
+                  <ToggleGroup fx:id="algoGroup" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="weightedRadio" layoutX="28.0" layoutY="493.0" mnemonicParsing="false" onMouseClicked="#weightedClicked" text="Weighted A*" toggleGroup="$algoGroup" />
+            <RadioButton fx:id="seqRadio" layoutX="26.0" layoutY="517.0" mnemonicParsing="false" onMouseClicked="#seqClicked" text="Sequential A*" toggleGroup="$algoGroup" />
+            <Label layoutX="14.0" layoutY="439.0" text="Select Algorithm:" />
+            <TextField id="weightField" fx:id="weightField" layoutX="20.0" layoutY="731.0" prefHeight="26.0" prefWidth="127.0" promptText="Enter Weight" visible="false" />
+            <Button fx:id="pathButton" layoutX="38.0" layoutY="805.0" mnemonicParsing="false" onMouseClicked="#generatePath" text="Generate Path" />
+            <RadioButton fx:id="uniRadio" layoutX="26.0" layoutY="543.0" mnemonicParsing="false" onMouseClicked="#uniformClicked" text="Uniform A*" toggleGroup="$algoGroup" />
+            <Circle fill="WHITE" layoutX="206.0" layoutY="64.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="226.0" layoutY="56.0" text="Regular Unblocked" />
+            <Circle layoutX="206.0" layoutY="92.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="227.0" layoutY="83.0" text="Blocked" />
+            <Circle fill="#a7a7a7" layoutX="207.0" layoutY="118.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="227.0" layoutY="110.0" text="Hard to Traverse" />
+            <Circle fill="#8bbdf5" layoutX="205.0" layoutY="144.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="225.0" layoutY="136.0" text="Regular Highway/River" />
+            <Circle fill="#071dac" layoutX="205.0" layoutY="169.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="225.0" layoutY="161.0" prefHeight="18.0" prefWidth="112.0" text="Hard to Traverse Highway/River">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Circle fill="#37ff00" layoutX="205.0" layoutY="196.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="225.0" layoutY="188.0" text="Start Position" />
+            <Circle fill="RED" layoutX="207.0" layoutY="222.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="227.0" layoutY="214.0" text="Goal Position" />
+            <Circle fill="#eeff00" layoutX="207.0" layoutY="248.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+            <Label layoutX="227.0" layoutY="240.0" text="Path" />
+            <Label layoutX="195.0" layoutY="29.0" text="Color Coding:" />
+            <Button fx:id="randGSButton" layoutX="14.0" layoutY="225.0" mnemonicParsing="false" onMouseClicked="#randomizeGS" text="Randomize Start/Goal Pair" />
+            <ListView fx:id="heuristicList" layoutX="20.0" layoutY="597.0" prefHeight="124.0" prefWidth="127.0" />
+            <Label fx:id="heuristicLabel" layoutX="22.0" layoutY="574.0" text="Pick Heuristic:" />
+            <TextField id="weightField2" fx:id="weightField2" layoutX="20.0" layoutY="768.0" prefHeight="26.0" prefWidth="127.0" promptText="Enter Weight #2" visible="false" />
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>

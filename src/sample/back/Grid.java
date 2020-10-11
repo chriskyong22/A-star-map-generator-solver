@@ -74,7 +74,7 @@ public class Grid{
         generateStartGoalVertex();
     }
 
-    void generateStartGoalVertex(){
+    public void generateStartGoalVertex(){
         Point start = generateStartGoalPoints();
         int distance = 0;
         Point end = null;

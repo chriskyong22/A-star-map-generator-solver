@@ -2,17 +2,19 @@ package sample;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import sample.back.*;
+import sample.back.Cell;
 
 import java.awt.*;
+import java.awt.Label;
 
 public class Controller {
 
@@ -47,9 +49,17 @@ public class Controller {
     private Button pathButton;
     @FXML
     private RadioButton uniRadio;
+    @FXML
+    private Button randGSButton;
+    @FXML
+    private ListView<String> heuristicList;
+    @FXML
+    private TextField weightField2;
 
     //Grid Object
     Grid g = new Grid();
+    //Available Heuristics
+    String[] heuristics = new String[]{"Heuristic 1", "Heuristic 2", "Heuristic 3", "Heuristic 4", "Heuristic 5"};
 
     /**
      * This method generates a random map after the generateMe button is clicked
@@ -189,9 +199,42 @@ public class Controller {
         buildGrid(g,false, -1);
     }
 
+    /**
+     * Randomizes goal start pair
+     */
+    @FXML
+    public void randomizeGS(){
+        g.generateStartGoalVertex();
+        buildGrid(g,false,-1);
+    }
+
     @FXML
     public void weightedClicked(){
         weightField.setVisible(true);
+        weightField2.setVisible(false);
+        heuristicList.getItems().addAll(heuristics);
+        heuristicList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+    }
+    @FXML
+    public void aStarClicked(){
+        weightField.setVisible(false);
+        weightField2.setVisible(false);
+        heuristicList.getItems().addAll(heuristics);
+        heuristicList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+    }
+    @FXML
+    public void uniformClicked(){
+        weightField.setVisible(false);
+        weightField2.setVisible(false);
+        heuristicList.getItems().addAll(heuristics);
+        heuristicList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+    }
+    @FXML
+    public void seqClicked(){
+        weightField.setVisible(true);
+        weightField2.setVisible(true);
+        heuristicList.getItems().addAll(heuristics);
+        heuristicList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     /**
