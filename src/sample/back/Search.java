@@ -1,6 +1,7 @@
 package sample.back;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.awt.Point;
 
@@ -24,25 +25,36 @@ public class Search {
         return g + (weight1 * h);
     }
 
-    void ExpandState(PriorityQueue<Cell> open_table[], PriorityQueue<Cell> close_table[], Cell s, int i){
-        
-
-
-        ArrayList<Point> neighbors = map.getNeighbors(s.getX(), s.getY());
-        Cell[] neighborsList = new Cell[neighbors.size()];
-        int count = 0;
+    void ExpandState(PriorityQueue<Cell> open_table[], PriorityQueue<Cell> close_table[], Cell current, int heuristicSelected, Cell goalCell, final double w1){
+        open_table[heuristicSelected].poll();
+        ArrayList<Point> neighbors = map.getNeighbors(current.getX(), current.getY());
         for(Point neighborPoint : neighbors) {
             Cell neighbor = map.getCell(neighborPoint.x, neighborPoint.y);
-            neighborsList[count] = neighbor;
-            count++;
-        }
 
-        if(open_table[i].remove(s)){
-            for(int j = 0; j < neighborsList.length; j++){
+            if(!neighbor.getVisited(heuristicSelected)){
+                neighbor.setCost(Integer.MAX_VALUE, heuristicSelected);
+                neighbor.setParent(null, heuristicSelected);
+            }
+
+            double g = current.getCost(heuristicSelected) + computeCost(current, neighbor);
+            if(neighbor.getCost(heuristicSelected) > g){
+
+                neighbor.setCost(g, heuristicSelected);
+                neighbor.setParent(current, heuristicSelected);
+
+                if(!close_table[heuristicSelected].contains(neighbor)){
+                    double f = Key(neighbor, goalCell, heuristicSelected, w1);
+                    neighbor.setHCost(f, heuristicSelected);
+                    if(open_table[heuristicSelected].contains(neighbor)){
+                        open_table[heuristicSelected].remove(neighbor);
+                    }
+                    open_table[heuristicSelected].add(neighbor);
+                }
 
             }
+
         }
-        return;
+
     }
 
     public int generateSequentialPath(int numOfHeuristics){
@@ -58,35 +70,17 @@ public class Search {
         map.setParentSize(numOfHeuristics);
         map.setCostSize(numOfHeuristics);
         map.setHCostSize(numOfHeuristics);
+        map.setVisitedSize(numOfHeuristics);
 
         PriorityQueue<Cell> open_table[] = new PriorityQueue[numOfHeuristics];
         PriorityQueue<Cell> close_table[] = new PriorityQueue[numOfHeuristics];
 
         for (int heuristicSelected = 0; heuristicSelected < numOfHeuristics; heuristicSelected++) {
             int finalI = heuristicSelected;
-            open_table[heuristicSelected] = new PriorityQueue<Cell>(11, new Comparator<Cell>(){
-                public int compare(Cell cell1, Cell cell2){
-                    if(cell1.getHCost(finalI) == cell2.getHCost(finalI)){
-                        return 0;
-                    }else if(cell1.getHCost(finalI) > cell2.getHCost(finalI)){
-                        return 1;
-                    }else{
-                        return -1;
-                    }
-                }
-            });
 
-            close_table[heuristicSelected] = new PriorityQueue<Cell>(11, new Comparator<Cell>(){
-                public int compare(Cell cell1, Cell cell2){
-                    if(cell1.getHCost(finalI) == cell2.getHCost(finalI)){
-                        return 0;
-                    }else if(cell1.getHCost(finalI) > cell2.getHCost(finalI)){
-                        return 1;
-                    }else{
-                        return -1;
-                    }
-                }
-            });
+            open_table[heuristicSelected] = new PriorityQueue<Cell>(11, (cell1, cell2) -> Double.compare(cell1.getHCost(finalI), cell2.getHCost(finalI)));
+
+            close_table[heuristicSelected] = new PriorityQueue<Cell>(11, (cell1, cell2) -> Double.compare(cell1.getHCost(finalI), cell2.getHCost(finalI)));
 
             startCell.setCost(0, heuristicSelected);
             goalCell.setCost(Integer.MAX_VALUE, heuristicSelected);
@@ -108,7 +102,8 @@ public class Search {
                         }
                     }else {
                         Cell s = open_table[heuristicSelected].peek();
-                        ExpandState(open_table, close_table, s, heuristicSelected);
+                        s.setVisited(heuristicSelected, true);
+                        ExpandState(open_table, close_table, s, heuristicSelected, goalCell, w1);
                         close_table[heuristicSelected].add(s);
                     }
                 }else {
@@ -119,7 +114,9 @@ public class Search {
                         }
                     }else{
                         Cell s = open_table[0].peek();
-                        ExpandState(open_table, close_table, s, 0);
+                        //Is the heuristic suppose to be 0 or heuristicSelected? not sure tbh
+                        s.setVisited(0, true);
+                        ExpandState(open_table, close_table, s, 0, goalCell, w1);
                         close_table[0].add(s);
                     }
                 }

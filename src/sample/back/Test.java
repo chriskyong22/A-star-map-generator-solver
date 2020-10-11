@@ -34,5 +34,7 @@ public class Test{
         System.out.println("The cost is: " + newMap.getCell(goal.x, goal.y).getCost(0) +  " | Found in: " + temp.size() + " moves");
        // Grid newMap = new Grid("map3.txt");
         //newMap.printGrid();
+        int x = test.generateSequentialPath(2);
+        System.out.println("Cost of Heuristic " + x + ": " + goalCell.getCost(x));
     }
 }

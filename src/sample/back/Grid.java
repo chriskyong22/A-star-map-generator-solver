@@ -438,6 +438,14 @@ public class Grid{
             }
         }
     }
+    public void setVisitedSize(int n){
+        for(int x = 0; x < rowSize; x++){
+            for(int y = 0; y < columnSize; y++){
+                map[x][y].setVisitedSize(n);
+            }
+        }
+    }
+
     void generateHardTraverseCells(){
         int numberOfPoints = 0;
         hardToTraverse = new Point[8];

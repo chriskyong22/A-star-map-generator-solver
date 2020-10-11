@@ -7,6 +7,7 @@ public class Cell implements Comparable<Cell> {
     private Cell[] parent;
     private int x;
     private int y;
+    private boolean[] visited;
 
     Cell(int x, int y){
         cellType = '1';
@@ -76,9 +77,20 @@ public class Cell implements Comparable<Cell> {
     public void setParentSize(int n){
         this.parent = new Cell[n];
     }
+    public void setVisitedSize(int n){
+        this.visited = new boolean[n];
+    }
 
     public void setHCostSize(int n){
-        this.parent = new Cell[n];
+        this.hcost = new double[n];
+    }
+
+    public void setVisited(int heuristic, boolean value){
+        this.visited[heuristic] = value;
+    }
+
+    public boolean getVisited(int heuristic){
+        return this.visited[heuristic];
     }
 
     public int getY(){
@@ -103,13 +115,7 @@ public class Cell implements Comparable<Cell> {
 
     @Override
     public int compareTo(Cell other){
-        if(this.hcost[0] == other.hcost[0]){
-            return 0;
-        }else if(this.hcost[0] > other.hcost[0]){
-            return 1;
-        }else{
-            return -1;
-        }
+        return Double.compare(this.hcost[0], other.getHCost(0));
     }
 
     @Override
