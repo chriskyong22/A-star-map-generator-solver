@@ -3,15 +3,30 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<SplitPane dividerPositions="0.2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="594.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
   <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="156.0">
          <children>
-            <Button id="importButton" fx:id="importButton" layoutX="52.0" layoutY="132.0" mnemonicParsing="false" onMouseClicked="#importME" text="Import" />
-            <Button id="generateButton" fx:id="generateButton" layoutX="52.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#generateME" text="Generate" />
-            <TextField id="infoField" fx:id="infoField" layoutX="9.0" layoutY="348.0" prefHeight="26.0" prefWidth="86.0" promptText="x,y" />
-            <Button id="infoButton" fx:id="infoButton" layoutX="102.0" layoutY="348.0" mnemonicParsing="false" text="Get Info" />
-            <TextField id="pathField" fx:id="pathField" layoutX="13.0" layoutY="98.0" promptText="File Path" />
+            <Button id="importButton" fx:id="importButton" layoutX="55.0" layoutY="109.0" mnemonicParsing="false" onMouseClicked="#importME" text="Import Map" />
+            <Button id="generateButton" fx:id="generateButton" layoutX="52.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#generateME" text="Generate Map" />
+            <TextField id="pathField" fx:id="pathField" layoutX="17.0" layoutY="75.0" promptText="File Path" />
+            <Button fx:id="startButton" layoutX="106.0" layoutY="146.0" mnemonicParsing="false" onMouseClicked="#setGridStart" text="Set Start" />
+            <Button fx:id="goalButton" layoutX="104.0" layoutY="181.0" mnemonicParsing="false" onMouseClicked="#setGridGoal" text="Set Goal" />
+            <TextField id="goalField" fx:id="goalField" layoutX="9.0" layoutY="181.0" prefHeight="26.0" prefWidth="86.0" promptText="x,y" />
+            <TextField id="startField" fx:id="startField" layoutX="9.0" layoutY="146.0" prefHeight="26.0" prefWidth="86.0" promptText="x,y" />
+            <TextArea fx:id="infoArea" editable="false" layoutX="23.0" layoutY="234.0" prefHeight="133.0" prefWidth="136.0" />
+            <Label layoutX="29.0" layoutY="216.0" text="Cell Info:" />
+            <RadioButton fx:id="aRadio" layoutX="35.0" layoutY="415.0" mnemonicParsing="false" text="A*">
+               <toggleGroup>
+                  <ToggleGroup fx:id="algoGroup" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="weightedRadio" layoutX="35.0" layoutY="442.0" mnemonicParsing="false" onMouseClicked="#weightedClicked" text="Weighted A*" toggleGroup="$algoGroup" />
+            <RadioButton fx:id="seqRadio" layoutX="33.0" layoutY="466.0" mnemonicParsing="false" text="Sequential A*" toggleGroup="$algoGroup" />
+            <Label layoutX="21.0" layoutY="388.0" text="Select Algorithm:" />
+            <TextField fx:id="weightField" layoutX="27.0" layoutY="520.0" prefHeight="26.0" prefWidth="127.0" promptText="Enter Weight" visible="false" />
+            <Button fx:id="pathButton" layoutX="49.0" layoutY="553.0" mnemonicParsing="false" onMouseClicked="#generatePath" text="Generate Path" />
+            <RadioButton fx:id="uniRadio" layoutX="33.0" layoutY="492.0" mnemonicParsing="false" text="Uniform A*" toggleGroup="$algoGroup" />
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>

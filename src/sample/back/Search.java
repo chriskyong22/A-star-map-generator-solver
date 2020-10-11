@@ -18,6 +18,74 @@ public class Search {
         this.weight = weight;
     }
 
+     void Keys(){
+        return;
+    }
+
+    void ExpandState(){
+        return;
+    }
+    public void manyHeuristic(int n){
+
+        double w2 = 3.0;
+
+        Point start = map.getStart();
+        Point goal = map.getEndVertex();
+        Cell startCell = map.getCell(start.x, start.y);
+        Cell goalCell = map.getCell(goal.x, goal.y);
+
+        startCell.setParent(map.getCell(start.x, start.y));
+        startCell.setCost(0);
+
+        PriorityQueue<Cell> open_table[] = new PriorityQueue[n];
+        PriorityQueue<Cell> close_table[] = new PriorityQueue[n];
+
+        double inf = Double.POSITIVE_INFINITY;
+
+        for (int i = 0; i < n; i++) {
+            open_table[i] = new PriorityQueue<Cell>();
+            close_table[i] = new PriorityQueue<Cell>();
+
+
+        }
+
+        while (open_table[0].peek().getCost()<inf){
+
+            for (int i = 1; i < n; i++) {
+                if (open_table[i].peek().getCost() <= w2*open_table[0].peek().getCost()){
+                    if ( <=open_table[i].peek().getCost()){
+                        if ( <inf){
+                            //terminate and return path pointed by bpi(sgoal)
+                            return;
+                        }
+                    }else {
+                        //s open .top()
+                        ExpandState();
+                        //insert s into closed
+
+                    }
+
+                }else {
+                    if ( <=open_table[0].peek().getCost()){
+                        if ( <inf){
+                            //terminate and return path pointed by bp0(sgoal)
+                            return;
+                        }
+                    }else {
+                        //s open .top()
+                        ExpandState();
+                        //insert s into closed
+                    }
+                }
+            }
+
+        }
+
+
+
+    }
+
+
     public ArrayList<Cell> generatePath(){
         ArrayList<Cell> tested = new ArrayList<Cell>();
         PriorityQueue<Cell> fringe = new PriorityQueue<Cell>();
