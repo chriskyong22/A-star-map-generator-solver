@@ -135,6 +135,10 @@ public class Search {
 
 
     public ArrayList<Cell> generateNormalPath(){
+        map.setParentSize(1);
+        map.setCostSize(1);
+        map.setHCostSize(1);
+        map.setVisitedSize(1);
         ArrayList<Cell> tested = new ArrayList<Cell>();
         PriorityQueue<Cell> fringe = new PriorityQueue<Cell>();
         Point start = map.getStart();
