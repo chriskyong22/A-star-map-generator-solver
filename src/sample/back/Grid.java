@@ -416,6 +416,28 @@ public class Grid{
         }
     }
 
+    public void setParentSize(int n){
+        for(int x = 0; x < rowSize; x++){
+            for(int y = 0; y < columnSize; y++){
+                map[x][y].setParentSize(n);
+            }
+        }
+    }
+
+    public void setCostSize(int n){
+        for(int x = 0; x < rowSize; x++){
+            for(int y = 0; y < columnSize; y++){
+                map[x][y].setCostSize(n);
+            }
+        }
+    }
+    public void setHCostSize(int n){
+        for(int x = 0; x < rowSize; x++){
+            for(int y = 0; y < columnSize; y++){
+                map[x][y].setHCostSize(n);
+            }
+        }
+    }
     void generateHardTraverseCells(){
         int numberOfPoints = 0;
         hardToTraverse = new Point[8];

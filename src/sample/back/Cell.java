@@ -2,35 +2,41 @@ package sample.back;
 
 public class Cell implements Comparable<Cell> {
     private char cellType; 
-    private double cost;
-    private double hcost;
-    private Cell parent;
+    private double[] cost;
+    private double[] hcost;
+    private Cell[] parent;
     private int x;
     private int y;
 
     Cell(int x, int y){
         cellType = '1';
-        cost = Integer.MAX_VALUE;
-        hcost = Integer.MAX_VALUE;
-        parent = null;
+        cost = new double[1];
+        cost[0] = Integer.MAX_VALUE;
+        hcost = new double[1];
+        hcost[0] = Integer.MAX_VALUE;
+        parent = new Cell[1];
+        parent[0] = null;
         this.x = x;
         this.y = y;
     }
 
     Cell(char type, int x, int y){
         this.cellType = type;
-        cost = Integer.MAX_VALUE;
-        hcost = Integer.MAX_VALUE;
-        parent = null;
+        cost = new double[1];
+        cost[0] = Integer.MAX_VALUE;
+        hcost = new double[1];
+        hcost[0] = Integer.MAX_VALUE;
+        parent = new Cell[1];
+        parent[0] = null;
         this.x = x;
         this.y = y;
     }
 
-    void setParent(Cell parent){
-        this.parent = parent;
+    void setParent(Cell parent, int i){
+        this.parent[i] = parent;
     }
-    public Cell getParent(){
-        return this.parent;
+    public Cell getParent(int i){
+        return this.parent[i];
     }
 
     public char getType(){
@@ -63,29 +69,43 @@ public class Cell implements Comparable<Cell> {
         return this.x;
     }
 
+    public void setCostSize(int n){
+        this.cost = new double[n];
+    }
+
+    public void setParentSize(int n){
+        this.parent = new Cell[n];
+    }
+
+    public void setHCostSize(int n){
+        this.parent = new Cell[n];
+    }
+
     public int getY(){
         return this.y;
     }
 
-    public void setCost(double value){
-        this.cost = value;
+    public void setCost(double value, int i){
+        this.cost[i] = value;
     }
 
-    public double getCost(){
-        return cost;
+    public double getCost(int i){
+        return cost[i];
     }
-    public void setHCost(double value){
-        this.hcost = value;
+
+    public void setHCost(double value, int i){
+        this.hcost[i] = value;
     }
-    public double getHCost(){
-        return this.hcost;
+    public double getHCost(int i){
+        return this.hcost[i];
     }
+
 
     @Override
     public int compareTo(Cell other){
-        if(this.hcost == other.hcost){
+        if(this.hcost[0] == other.hcost[0]){
             return 0;
-        }else if(this.hcost > other.hcost){
+        }else if(this.hcost[0] > other.hcost[0]){
             return 1;
         }else{
             return -1;

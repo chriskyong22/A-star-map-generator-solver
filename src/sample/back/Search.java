@@ -18,13 +18,15 @@ public class Search {
         this.weight = weight;
     }
 
-    void Key(Cell start, Cell goal, Cell current, int i){
-        return; //g(s_i) + (int) (weight * computeHeuristic(current, goal))
+    double Key(Cell current, Cell goal, int heuristicSelection, final double weight1){
+        double g = current.getCost(heuristicSelection);
+        double h = computeHeuristic(current, goal, heuristicSelection);
+        return g + (weight1 * h);
     }
 
     void ExpandState(PriorityQueue<Cell> open_table[], PriorityQueue<Cell> close_table[], Cell s, int i){
         ArrayList<Point> neighbors = map.getNeighbors(s.getX(), s.getY());
-        Cell[] neighborsList = new Cell[8];
+        Cell[] neighborsList = new Cell[neighbors.size()];
         int count = 0;
         for(Point neighborPoint : neighbors) {
             Cell neighbor = map.getCell(neighborPoint.x, neighborPoint.y);
@@ -39,38 +41,68 @@ public class Search {
         }
         return;
     }
-    public void manyHeuristic(int n){
 
+    public int generateSequentialPath(int numOfHeuristics){
+        double w1 = 1.0;
         double w2 = 3.0;
 
         Point start = map.getStart();
         Point goal = map.getEndVertex();
+
         Cell startCell = map.getCell(start.x, start.y);
         Cell goalCell = map.getCell(goal.x, goal.y);
 
-        startCell.setParent(map.getCell(start.x, start.y));
-        startCell.setCost(0);
+        map.setParentSize(numOfHeuristics);
+        map.setCostSize(numOfHeuristics);
+        map.setHCostSize(numOfHeuristics);
 
-        PriorityQueue<Cell> open_table[] = new PriorityQueue[n];
-        PriorityQueue<Cell> close_table[] = new PriorityQueue[n];
+        PriorityQueue<Cell> open_table[] = new PriorityQueue[numOfHeuristics];
+        PriorityQueue<Cell> close_table[] = new PriorityQueue[numOfHeuristics];
 
-        double inf = Double.POSITIVE_INFINITY;
 
-        for (int i = 0; i < n; i++) {
-            open_table[i] = new PriorityQueue<Cell>();
-            close_table[i] = new PriorityQueue<Cell>();
+        for (int heuristicSelected = 0; heuristicSelected < numOfHeuristics; heuristicSelected++) {
+            int finalI = heuristicSelected;
+            open_table[heuristicSelected] = new PriorityQueue<Cell>(11, new Comparator<Cell>(){
+                public int compare(Cell cell1, Cell cell2){
+                    if(cell1.getHCost(finalI) == cell2.getHCost(finalI)){
+                        return 0;
+                    }else if(cell1.getHCost(finalI) > cell2.getHCost(finalI)){
+                        return 1;
+                    }else{
+                        return -1;
+                    }
+                }
+            });
 
+            close_table[heuristicSelected] = new PriorityQueue<Cell>(11, new Comparator<Cell>(){
+                public int compare(Cell cell1, Cell cell2){
+                    if(cell1.getHCost(finalI) == cell2.getHCost(finalI)){
+                        return 0;
+                    }else if(cell1.getHCost(finalI) > cell2.getHCost(finalI)){
+                        return 1;
+                    }else{
+                        return -1;
+                    }
+                }
+            });
+
+            startCell.setCost(0, heuristicSelected);
+            goalCell.setCost(Integer.MAX_VALUE, heuristicSelected);
+            startCell.setParent(null, heuristicSelected);
+            goalCell.setParent(null, heuristicSelected);
+            double value = Key(startCell, goalCell, heuristicSelected, w1);
+            startCell.setHCost(value, heuristicSelected);
+            open_table[heuristicSelected].add(startCell);
 
         }
 
-        while (open_table[0].peek().getCost()<inf){
-
-            for (int i = 1; i < n; i++) {
-                if (open_table[i].peek().getCost() <= w2*open_table[0].peek().getCost()){
-                    if ( <=open_table[i].peek().getCost()){
-                        if ( <inf){
-                            //terminate and return path pointed by bpi(sgoal)
-                            return;
+        while (open_table[0].peek().getHCost(0) < Integer.MAX_VALUE){
+            for (int heuristicSelected = 1; heuristicSelected < numOfHeuristics; heuristicSelected++) {
+                if (open_table[heuristicSelected].peek().getHCost(heuristicSelected) <= w2 * open_table[0].peek().getHCost(0)){
+                    if (goalCell.getCost(heuristicSelected) <= open_table[heuristicSelected].peek().getHCost(heuristicSelected)){
+                        if (goalCell.getCost(heuristicSelected) < Integer.MAX_VALUE){
+                            System.out.println("Successfully found a path by heuristic: " + heuristicSelected + ".");
+                            return heuristicSelected;
                         }
                     }else {
                         //s open .top()
@@ -81,7 +113,7 @@ public class Search {
 
                 }else {
                     if ( <=open_table[0].peek().getCost()){
-                        if ( <inf){
+                        if ( < Integer.MAX_VALUE){
                             //terminate and return path pointed by bp0(sgoal)
                             return;
                         }
@@ -100,7 +132,7 @@ public class Search {
     }
 
 
-    public ArrayList<Cell> generatePath(){
+    public ArrayList<Cell> generateNormalPath(){
         ArrayList<Cell> tested = new ArrayList<Cell>();
         PriorityQueue<Cell> fringe = new PriorityQueue<Cell>();
         Point start = map.getStart();
@@ -109,9 +141,9 @@ public class Search {
         Cell goalCell = map.getCell(goal.x, goal.y);
 
         //Initialization of A*
-        startCell.setParent(map.getCell(start.x, start.y));
-        startCell.setCost(0);
-        startCell.setHCost(computeHeuristic(startCell, goalCell));
+        startCell.setParent(map.getCell(start.x, start.y), 0);
+        startCell.setCost(0, 0);
+        startCell.setHCost(computeHeuristic(startCell, goalCell), 0);
         fringe.add(map.getCell(start.x, start.y));
 
         while(!fringe.isEmpty()){
@@ -129,17 +161,17 @@ public class Search {
                     continue;
                 }
                 if(!fringe.contains(neighbor)){
-                    neighbor.setHCost(Integer.MAX_VALUE);
-                    neighbor.setCost(Integer.MAX_VALUE);
-                    neighbor.setParent(null);
+                    neighbor.setHCost(Integer.MAX_VALUE, 0);
+                    neighbor.setCost(Integer.MAX_VALUE, 0);
+                    neighbor.setParent(null, 0);
                 }
-                double g = current.getCost() + computeCost(current, neighbor);
-                if(neighbor.getCost() > g){
-                    neighbor.setCost(g);
+                double g = current.getCost(0) + computeCost(current, neighbor);
+                if(neighbor.getCost(0) > g){
+                    neighbor.setCost(g,0);
                     double h = computeHeuristic(neighbor, goalCell);
                     double f = computeFullCost(weight, h, g);
-                    neighbor.setHCost(f);
-                    neighbor.setParent(current);
+                    neighbor.setHCost(f, 0);
+                    neighbor.setParent(current, 0);
                     if(fringe.contains(neighbor)){
                         fringe.remove(neighbor);
                     }
@@ -173,17 +205,24 @@ public class Search {
         return distance;
     }
 
-    //I don't think this is needed, I think computeCost already covers this case
-    double computeHeuristic(Cell start, Cell goal, double weight){
+    // Heuristic computation for A* sequential
+    double computeHeuristic(Cell start, Cell goal, int heuristicSelection){
         double distance = 0;
-        //
-        //overload for different weight
-        //
+
         double distanceX = Math.abs(start.getX() - goal.getX());
         double distanceY = Math.abs(start.getY() - goal.getY());
-        distance = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY));
-        distance *= weight;
 
+        switch(heuristicSelection){
+            case 1: //Euclidian distance  * .25
+                distance = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY));
+                distance *= .25;
+                break;
+            case 2: //Manhattan distance * .25
+                distance = distanceX + distanceY;
+                distance *= .25;
+                break;
+            default:
+        }
         return distance;
     }
 

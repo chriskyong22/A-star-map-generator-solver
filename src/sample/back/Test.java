@@ -23,15 +23,15 @@ public class Test{
         newMap.writeToFile("map1.txt");
         */
         Search test = new Search(newMap, 1);
-        ArrayList<Cell> temp = test.generatePath();
+        ArrayList<Cell> temp = test.generateNormalPath();
         Point goal = newMap.getEndVertex();
         Cell goalCell = newMap.getCell(goal.x, goal.y);
-        while(!goalCell.getParent().equals(goalCell)) {
+        while(!goalCell.getParent(0).equals(goalCell)) {
             goalCell.setType('!');
-            goalCell = goalCell.getParent();
+            goalCell = goalCell.getParent(0);
         }
         newMap.printGrid();
-        System.out.println("The cost is: " + newMap.getCell(goal.x, goal.y).getCost() +  " | Found in: " + temp.size() + " moves");
+        System.out.println("The cost is: " + newMap.getCell(goal.x, goal.y).getCost(0) +  " | Found in: " + temp.size() + " moves");
        // Grid newMap = new Grid("map3.txt");
         //newMap.printGrid();
     }

@@ -123,7 +123,7 @@ public class Controller {
                 int finalI = i;
                 int finalJ = j;
                 cells[i][j].setOnMouseClicked(event -> {
-                    infoArea.setText("[" + finalJ + ":" + finalI + "]" + "\n" + "Cell Cost: " + g.map[finalJ][finalI].getCost() + "\n" + "HCost is: " + g.map[finalJ][finalI].getHCost());
+                    infoArea.setText("[" + finalJ + ":" + finalI + "]" + "\n" + "Cell Cost: " + g.map[finalJ][finalI].getCost(0) + "\n" + "HCost is: " + g.map[finalJ][finalI].getHCost(0));
                 });
 
                 switch(g.map[j][i].getType()){
@@ -151,9 +151,9 @@ public class Controller {
         //Draw Path
         if (b) {
             Cell goalCell = g.getCell(goalX, goalY);
-            while (!goalCell.getParent().equals(goalCell)) {
+            while (!goalCell.getParent(0).equals(goalCell)) {
                 cells[goalCell.getY()][goalCell.getX()].setFill(Color.YELLOW);
-                goalCell = goalCell.getParent();
+                goalCell = goalCell.getParent(0);
             }
         }
         //Color start and end pos
@@ -197,16 +197,16 @@ public class Controller {
     public void generatePath(){
         if(uniRadio.isSelected()){
             Search test = new Search(g, 0);
-            test.generatePath();
+            test.generateNormalPath();
         }
         if(aRadio.isSelected()){
             Search test = new Search(g, 1);
-            test.generatePath();
+            test.generateNormalPath();
         }
         if(weightedRadio.isSelected()){
             double weight = Double.parseDouble(weightField.getText());
             Search test = new Search(g, weight);
-            test.generatePath();
+            test.generateNormalPath();
         }
 
         buildGrid(g,true);
