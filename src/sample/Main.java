@@ -13,6 +13,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Assignment 1 Visualizer");
         primaryStage.setScene(new Scene(root, 1600, 800));
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

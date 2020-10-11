@@ -59,7 +59,9 @@ public class Controller {
     //Grid Object
     Grid g = new Grid();
     //Available Heuristics
-    String[] heuristics = new String[]{"Heuristic 1", "Heuristic 2", "Heuristic 3", "Heuristic 4", "Heuristic 5"};
+    String[] heuristics = new String[]{"0 - Euclidean Distance/4", "1 - Manhattan Distance/4", "2 - Diagonal Distance", "3 - Chebyshev Distance", "4 - Euclidean Distance"};
+    //Number of heuristics
+    String[] numHeuristics = new String[]{"1","2","3","4","5"};
 
     /**
      * This method generates a random map after the generateMe button is clicked
@@ -212,6 +214,7 @@ public class Controller {
     public void weightedClicked(){
         weightField.setVisible(true);
         weightField2.setVisible(false);
+        heuristicList.getItems().clear();
         heuristicList.getItems().addAll(heuristics);
         heuristicList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
@@ -219,6 +222,7 @@ public class Controller {
     public void aStarClicked(){
         weightField.setVisible(false);
         weightField2.setVisible(false);
+        heuristicList.getItems().clear();
         heuristicList.getItems().addAll(heuristics);
         heuristicList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
@@ -226,15 +230,14 @@ public class Controller {
     public void uniformClicked(){
         weightField.setVisible(false);
         weightField2.setVisible(false);
-        heuristicList.getItems().addAll(heuristics);
-        heuristicList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
     @FXML
     public void seqClicked(){
         weightField.setVisible(true);
         weightField2.setVisible(true);
-        heuristicList.getItems().addAll(heuristics);
-        heuristicList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        heuristicList.getItems().clear();
+        heuristicList.getItems().addAll(numHeuristics);
+        heuristicList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
     /**
@@ -242,6 +245,9 @@ public class Controller {
      */
     @FXML
     public void generatePath(){
+        String selection = heuristicList.getSelectionModel().getSelectedItem();
+        int heuristicSelected = Character.getNumericValue(selection.charAt(0));
+
         if(uniRadio.isSelected()){
             Search test = new Search(g, 0);
             test.generateNormalPath(0);
@@ -249,19 +255,19 @@ public class Controller {
         }
         if(aRadio.isSelected()){
             Search test = new Search(g, 1);
-            test.generateNormalPath(0);
+            test.generateNormalPath(heuristicSelected);
             buildGrid(g,true, 0);
         }
         if(weightedRadio.isSelected()){
             double weight = Double.parseDouble(weightField.getText());
             Search test = new Search(g, weight);
-            test.generateNormalPath(0);
+            test.generateNormalPath(heuristicSelected);
             buildGrid(g,true, 0);
         }
         if(seqRadio.isSelected()){
             double w1 = Double.parseDouble(weightField.getText());
             double w2 = Double.parseDouble(weightField2.getText());
-            int numOfHeuristics = Integer.parseInt();
+            int numOfHeuristics = Integer.parseInt(selection);
             Search test = new Search(g, 1);
             int selected = test.generateSequentialPath(numOfHeuristics, w1,w2);
             buildGrid(g, true, selected);
