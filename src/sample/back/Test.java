@@ -33,11 +33,17 @@ public class Test{
         System.out.println("The cost is: " + newMap.getCell(goal.x, goal.y).getCost(0) +  " | Found in: " + temp.size() + " moves");
        // Grid newMap = new Grid("map3.txt");
         //newMap.printGrid();
-        int x = test.generateSequentialPath(2);
+        int x = test.generateSequentialPath(1);
         goalCell = newMap.getCell(goal.x, goal.y);
         System.out.println("Cost of Heuristic " + x + ": " + goalCell.getCost(x));
-        x = test.generateSequentialPath(4);
+        //x = test.generateSequentialPath(4);
         goalCell = newMap.getCell(goal.x, goal.y);
-        System.out.println("Cost of Heuristic " + x + ": " + goalCell.getCost(x));
+        Cell startCell = newMap.getCell(newMap.getStart().x, newMap.getStart().y);
+        Cell temp1 = goalCell;
+        while(temp1 != startCell) {
+            temp1.setType('!');
+            temp1 = temp1.getParent(x);
+        }
+        newMap.printGrid();
     }
 }

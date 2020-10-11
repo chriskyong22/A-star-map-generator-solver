@@ -58,6 +58,13 @@ public class Search {
     }
 
     public int generateSequentialPath(int numOfHeuristics){
+        if(numOfHeuristics <= 0){
+            return -1;
+        }
+        if(numOfHeuristics == 1){
+            generateNormalPath();
+            return 0;
+        }
         double w1 = 1.0;
         double w2 = 3.0;
 
