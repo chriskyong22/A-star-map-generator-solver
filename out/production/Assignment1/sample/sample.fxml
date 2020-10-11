@@ -51,7 +51,7 @@
             <Label layoutX="227.0" layoutY="240.0" text="Path" />
             <Label layoutX="195.0" layoutY="29.0" text="Color Coding:" />
             <Button fx:id="randGSButton" layoutX="14.0" layoutY="225.0" mnemonicParsing="false" onMouseClicked="#randomizeGS" text="Randomize Start/Goal Pair" />
-            <ListView fx:id="heuristicList" layoutX="20.0" layoutY="597.0" prefHeight="124.0" prefWidth="127.0" />
+            <ListView fx:id="heuristicList" layoutX="20.0" layoutY="597.0" prefHeight="124.0" prefWidth="238.0" />
             <Label fx:id="heuristicLabel" layoutX="22.0" layoutY="574.0" text="Pick Heuristic:" />
             <TextField id="weightField2" fx:id="weightField2" layoutX="20.0" layoutY="768.0" prefHeight="26.0" prefWidth="127.0" promptText="Enter Weight #2" visible="false" />
          </children></AnchorPane>

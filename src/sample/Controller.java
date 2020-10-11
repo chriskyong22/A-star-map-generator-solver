@@ -59,7 +59,7 @@ public class Controller {
     //Grid Object
     Grid g = new Grid();
     //Available Heuristics
-    String[] heuristics = new String[]{"0 - Euclidean Distance/4", "1 - Manhattan Distance/4", "2 - Diagonal Distance", "3 - Chebyshev Distance", "4 - Euclidean Distance"};
+    String[] heuristics = new String[]{"0 - Euclidean Distance/4", "1 - Manhattan Distance/4", "2 - Diagonal Distance/4", "3 - Chebyshev Distance/4", "4 - Euclidean Distance"};
     //Number of heuristics
     String[] numHeuristics = new String[]{"1","2","3","4","5"};
 
