@@ -66,6 +66,7 @@ public class Test{
 
 
         }
+        // NOTE first algorithm is uniform so I just made it store the values to heuristic 4 to not waste time
         for(int algo = 0; algo < 4; algo++) {
             System.out.println("Algorithm " + algo);
             for (int heuristic = 0; heuristic < 5; heuristic++) {
