@@ -223,9 +223,8 @@ public class Search {
                 distance = distanceX + distanceY;
                 distance *= .25;
                 break;
-            case 2: //Diagonal Distance * .25
-                distance = 1 * (distanceX + distanceY) + ((Math.sqrt(2) - 2 * 1) * Math.min(distanceX, distanceY));
-                distance *= .25;
+            case 2: //Diagonal Distance
+                distance = (1 * .25) * (distanceX + distanceY) + (((Math.sqrt(2) * .25) - 2 * (1 * .25)) * Math.min(distanceX, distanceY));
                 break;
             case 3: //Chess Board Distance * .25
                 distance = (distanceX + distanceY) - 1 * Math.min(distanceX, distanceY);

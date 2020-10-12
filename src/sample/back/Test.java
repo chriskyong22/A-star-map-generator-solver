@@ -85,7 +85,9 @@ public class Test{
                 System.out.println("Cost: " + averages[algo][heuristic][1]);
                 System.out.println("Runtime: " + averages[algo][heuristic][2]);
                 System.out.println("Memory usage: " + averages[algo][heuristic][3]);
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
+            System.out.println();
         }
 
         /*
