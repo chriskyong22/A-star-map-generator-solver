@@ -68,8 +68,8 @@ public class Grid{
     public void generateGrid(){
         generateHardTraverseCells();
         generateRivers();
-        System.out.println("Finished Generating all Rivers: ");
-        printGrid();
+        //System.out.println("Finished Generating all Rivers: ");
+        //printGrid();
         generateBlockedCells();
         generateStartGoalVertex();
     }
@@ -127,8 +127,8 @@ public class Grid{
 
     void generateBlockedCells(){
         int blockLeft = (int) ((0.20 * (columnSize * rowSize)));
-        System.out.println("Populating " + blockLeft + " blocked spaces");
-        System.out.println();
+        //System.out.println("Populating " + blockLeft + " blocked spaces");
+        //System.out.println();
         while(blockLeft >= 0){
             int x = (int) (Math.random() * rowSize);
             int y = (int) (Math.random() * columnSize);
@@ -157,7 +157,7 @@ public class Grid{
             attempted.add(currentAttempt);
 
             int direction = 0;
-            System.out.println("Starting [X: " + x + " Y: " + y + "]");
+            //System.out.println("Starting [X: " + x + " Y: " + y + "]");
             ArrayList<Point> initialMove;
             if(!checkBoundaries(x+20, y)){
                 direction = 3;
@@ -176,7 +176,7 @@ public class Grid{
                 initialMove = move(x,y, direction);
                 y -= 19;
             }
-            System.out.print(" Direction: " + direction + "\n");
+            //System.out.print(" Direction: " + direction + "\n");
             ArrayList<Point> currentRiverMoves = new ArrayList<Point>();
             if(initialMove == null){
                 continue;
@@ -186,7 +186,7 @@ public class Grid{
                 initialMove.clear();
             }
             int riverLength = 20;
-            System.out.println("[Vertical/Horizontal completed]: X: " + x + " Y: " + y);
+            //System.out.println("[Vertical/Horizontal completed]: X: " + x + " Y: " + y);
             while(x < rowSize - 1 && y < columnSize - 1 && x > 0 && y > 0){
                 int chance = (int) ((Math.random() * 10) + 1);
                 if(chance <= 6){ // Same direction
@@ -195,7 +195,7 @@ public class Grid{
                 }else{ //Right Direction
                     direction = (direction % 4) + 1;
                 }
-                System.out.println("The direction selected for this iteration is: " + direction);
+                //System.out.println("The direction selected for this iteration is: " + direction);
                 ArrayList<Point> temp;
                 switch(direction){
                     case 1:
@@ -227,7 +227,7 @@ public class Grid{
                     riverLength = -1;
                     break;
                 }
-                System.out.println("[UPDATED] X: " + x + " Y: " + y + " River Length: " + riverLength);
+                //System.out.println("[UPDATED] X: " + x + " Y: " + y + " River Length: " + riverLength);
                 if(x == 0 || y == 0 || y == columnSize - 1 || x == rowSize - 1){ //Next iteration starts exactly on the boundary, should not expand anymore (this is an edgecase)
                     System.out.println("Finished Generating this River, reached boundaries");
                 }
@@ -235,13 +235,13 @@ public class Grid{
                 applyPositions(temp);
                 //printGrid();
             }
-            System.out.println("[Final] X: " + x + " Y: " + y + " River Length: " + riverLength);
+            //System.out.println("[Final] X: " + x + " Y: " + y + " River Length: " + riverLength);
             if(riverLength < 100){
                 resetMap(currentRiverMoves);
             }else{
                 allRiverMoves.addAll(currentRiverMoves);
                 numberOfRivers = numberOfRivers - 1;
-                printGrid();
+                //printGrid();
             }
         }
     }
@@ -458,7 +458,7 @@ public class Grid{
             int minY = Math.max(y - 15, 0);
             int maxX = Math.min(x + 15, rowSize - 1);
             int maxY = Math.min(y + 15, columnSize - 1);
-            System.out.println("The random point is: " + x + " " + y + " and the regionX's min is " + minX + " and the regionY's min is " + minY + " and the max X is " + maxX + " and the max Y is " + maxY);
+            //System.out.println("The random point is: " + x + " " + y + " and the regionX's min is " + minX + " and the regionY's min is " + minY + " and the max X is " + maxX + " and the max Y is " + maxY);
             for(int regionX = minX; regionX <= maxX; regionX++){
                 for(int regionY = minY; regionY <= maxY; regionY++){
                     if(((int) (Math.random() * 2)) == 1){
