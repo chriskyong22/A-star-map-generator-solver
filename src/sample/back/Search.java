@@ -30,8 +30,10 @@ public class Search {
         ArrayList<Point> neighbors = map.getNeighbors(current.getX(), current.getY());
         for(Point neighborPoint : neighbors) {
             Cell neighbor = map.getCell(neighborPoint.x, neighborPoint.y);
-
-            if(!neighbor.getVisited(heuristicSelected)){
+            if(neighbor.getVisited(heuristicSelected)){
+                continue;
+            }
+            if(!open_table[heuristicSelected].contains(neighbor)){
                 neighbor.setCost(Integer.MAX_VALUE, heuristicSelected);
                 neighbor.setParent(null, heuristicSelected);
             }
@@ -101,8 +103,6 @@ public class Search {
                 if (open_table[heuristicSelected].peek().getHCost(heuristicSelected) <= w2 * open_table[0].peek().getHCost(0)){
                     if (goalCell.getCost(heuristicSelected) <= open_table[heuristicSelected].peek().getHCost(heuristicSelected)){
                         if (goalCell.getCost(heuristicSelected) < Integer.MAX_VALUE){
-                            System.out.println("Successfully found a path by heuristic: " + heuristicSelected + ".");
-                            System.out.println("The cost of " + goalCell.getX() + " " + goalCell.getY() + ": " + goalCell.getCost(heuristicSelected));
                             double lowestCost = goalCell.getCost(heuristicSelected);
                             int lowest = heuristicSelected;
                             for(int heuristic = 0; heuristic < numOfHeuristics; heuristic++){
@@ -146,7 +146,6 @@ public class Search {
         map.setParentSize(1);
         map.setCostSize(1);
         map.setHCostSize(1);
-        map.setVisitedSize(1);
         ArrayList<Cell> tested = new ArrayList<Cell>();
         PriorityQueue<Cell> fringe = new PriorityQueue<Cell>();
         Point start = map.getStart();
@@ -157,7 +156,7 @@ public class Search {
         //Initialization of A*
         startCell.setParent(map.getCell(start.x, start.y), 0);
         startCell.setCost(0, 0);
-        startCell.setHCost(computeHeuristic(startCell, goalCell, heuristicSelection), 0);
+        startCell.setHCost(computeFullCost(weight, computeHeuristic(startCell, goalCell, heuristicSelection), 0), 0);
         fringe.add(map.getCell(start.x, start.y));
 
         while(!fringe.isEmpty()){

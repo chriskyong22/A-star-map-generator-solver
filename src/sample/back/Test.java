@@ -37,7 +37,7 @@ public class Test{
                 }
                 for (int heuristic = 0; heuristic < 5; heuristic++) {
                     if(algo == 0){
-                        heuristic = 4;
+                        heuristic = 6;
                     }
                     double memoryUsed = 0;
                     do{
@@ -48,6 +48,9 @@ public class Test{
                         ArrayList<Cell> nodesVisit = algorithm.generateNormalPath(heuristic);
                         long endTime = System.nanoTime();
                         long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
+                        if(algo == 0){
+                            heuristic = 4;
+                        }
                         memory[algo][heuristic][i] = ((usedMemoryAfter - usedMemory));
                         System.out.println("Memory increased by: " + memory[algo][heuristic][i] + " bytes");
                         nodesVisited[algo][heuristic][i] = nodesVisit.size();

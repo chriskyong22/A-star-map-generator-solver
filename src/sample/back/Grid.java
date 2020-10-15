@@ -219,7 +219,7 @@ public class Grid{
                         y = y - 20;
                         break;
                     default: 
-                        System.out.println("The direction was out of bounds: " + direction);
+                        System.out.println("Error: The direction was out of bounds: " + direction);
                         temp = null;
                         break;
                 }
@@ -229,7 +229,7 @@ public class Grid{
                 }
                 //System.out.println("[UPDATED] X: " + x + " Y: " + y + " River Length: " + riverLength);
                 if(x == 0 || y == 0 || y == columnSize - 1 || x == rowSize - 1){ //Next iteration starts exactly on the boundary, should not expand anymore (this is an edgecase)
-                    System.out.println("Finished Generating this River, reached boundaries");
+                    //System.out.println("Finished Generating this River, reached boundaries");
                 }
                 currentRiverMoves.addAll(temp);
                 applyPositions(temp);
