@@ -6,15 +6,116 @@ import java.util.ArrayList;
 public class Test{
     public static void main(String[] args){
 
+        double averages[][] = new double[3][4];
+        int nodesVisited[][] = new int[3][50];
+        double cost[][] = new double[3][50];
+        double runtimes[][] = new double[3][50];
+        double memory[][] = new double[3][50];
+        for(int i = 0; i < 50; i++){
+            System.out.println("Map " + i + ":");
+            Grid newMap = new Grid();
+            newMap.generateGrid();
+            for(int algo = 0; algo < 3; algo++){
+                Search algorithm = null;
+                algorithm = new Search(newMap, 1);
+                long usedMemory;
+                long startTime;
+                long usedMemoryAfter;
+                long endTime;
+                double memoryUsed = 0;
+                Runtime runtime = Runtime.getRuntime();
+                switch(algo){
+                    case 0:
+                        do{
+                            usedMemory = runtime.totalMemory() - runtime.freeMemory();
+                            System.out.println("Used memory before: " + (usedMemory) + " bytes");
+                            startTime = System.nanoTime();
+                            ArrayList<Cell> nodesVisit = algorithm.generateNormalPath(0);
+                            endTime= System.nanoTime();
+                            usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
+                            memory[algo][i] = ((usedMemoryAfter - usedMemory));
+                            System.out.println("Memory increased by: " + memory[algo][i] + " bytes");
+                            nodesVisited[algo][i] = nodesVisit.size();
+                            System.out.println("The nodes visited is: " + nodesVisited[algo][i]);
+                            cost[algo][i] = newMap.getCell(newMap.getEndVertex().x, newMap.getEndVertex().y).getCost(0);
+                            System.out.println("The cost is: " + cost[algo][i]);
+                            runtimes[algo][i] = (endTime - startTime);
+                            System.out.println("The runtime is: " + runtimes[algo][i] + " nano-seconds");
+                            memoryUsed = memory[algo][i];
+                            System.out.println("\n\n\n\n");
+                        }while(memoryUsed < 0);
+                        break;
+                    case 1:
+                        do{
+                            usedMemory = runtime.totalMemory() - runtime.freeMemory();
+                            System.out.println("Used memory before: " + (usedMemory) + " bytes");
+                            startTime = System.nanoTime();
+                            int heuristic = algorithm.generateSequentialPath(5, 1.25, 2);
+                            endTime = System.nanoTime();
+                            usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
+                            memory[algo][i] = ((usedMemoryAfter - usedMemory));
+                            System.out.println("Memory increased by: " + memory[algo][i] + " bytes");
+                            nodesVisited[algo][i] = algorithm.nodesVisited;
+                            System.out.println("The nodes visited is: " + nodesVisited[algo][i]);
+                            cost[algo][i] = newMap.getCell(newMap.getEndVertex().x, newMap.getEndVertex().y).getCost(heuristic);
+                            System.out.println("The cost is: " + cost[algo][i]);
+                            runtimes[algo][i] = (endTime - startTime);
+                            System.out.println("The runtime is: " + runtimes[algo][i] + " nano-seconds");
+                            memoryUsed = memory[algo][i];
+                            System.out.println("\n\n\n\n");
+                        }while(memoryUsed < 0);
+                        break;
+                    case 2:
+                        do{
+                            usedMemory = runtime.totalMemory() - runtime.freeMemory();
+                            System.out.println("Used memory before: " + (usedMemory) + " bytes");
+                            startTime = System.nanoTime();
+                            int heuristic = algorithm.generateSequentialPath(5, 1.5, 2.25);
+                            endTime = System.nanoTime();
+                            usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
+                            memory[algo][i] = ((usedMemoryAfter - usedMemory));
+                            nodesVisited[algo][i] = algorithm.nodesVisited;
+                            System.out.println("The nodes visited is: " + nodesVisited[algo][i]);
+                            System.out.println("Memory increased by: " + memory[algo][i] + " bytes");
+                            cost[algo][i] = newMap.getCell(newMap.getEndVertex().x, newMap.getEndVertex().y).getCost(heuristic);
+                            System.out.println("The cost is: " + cost[algo][i]);
+                            runtimes[algo][i] = (endTime - startTime);
+                            System.out.println("The runtime is: " + runtimes[algo][i] + " nano-seconds");
+                            memoryUsed = memory[algo][i];
+                            System.out.println("\n\n\n\n");
+                        }while(memoryUsed < 0);
+                        break;
+                    default:
+                        System.out.println("ERROR: SHOULD NEVER BE REACHED");
+                }
+            }
+        }
+        for(int algo = 0; algo < 3; algo++) {
+            System.out.println("Algorithm " + algo);
+                for (int temp = 0; temp < 50; temp++){
+                    averages[algo][0] += nodesVisited[algo][temp];
+                    averages[algo][1] += cost[algo][temp];
+                    averages[algo][2] += runtimes[algo][temp];
+                    averages[algo][3] += memory[algo][temp];
+                }
+                averages[algo][0] /= 50;
+                averages[algo][1] /= 50;
+                averages[algo][2] /= 50;
+                averages[algo][3] /= 50;
+                System.out.println("Nodes Visited: " + averages[algo][0]);
+                System.out.println("Cost: " + averages[algo][1]);
+                System.out.println("Runtime: " + averages[algo][2]);
+                System.out.println("Memory usage: " + averages[algo][3]);
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                System.out.println();
+        }
+
+        /* Test bench for the 3 algos
         double averages[][][] = new double[4][5][4];
         int nodesVisited[][][] = new int[4][5][50];
         double cost[][][] = new double[4][5][50];
         double runtimes[][][] = new double[4][5][50];
         double memory[][][] = new double[4][5][50];
-
-
-
-
         for (int i = 0; i < 50; i++) {
             System.out.println("ITERATION " + i + ":");
             Grid newMap = new Grid();
@@ -92,6 +193,7 @@ public class Test{
             }
             System.out.println();
         }
+        */
 
         /*
         //Grid newMap = new Grid("map4.txt");

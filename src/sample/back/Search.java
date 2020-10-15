@@ -8,7 +8,7 @@ import java.awt.Point;
 public class Search {
     private double weight;
     public Grid map;
-
+    public int nodesVisited;
     public Search(Grid map){
         this.map = map;
         this.weight = 1;
@@ -60,6 +60,7 @@ public class Search {
     }
 
     public int generateSequentialPath(int numOfHeuristics, double w1, double w2){
+        this.nodesVisited = 0;
         if(numOfHeuristics <= 0){
             return -1;
         }
@@ -105,12 +106,15 @@ public class Search {
                         if (goalCell.getCost(heuristicSelected) < Integer.MAX_VALUE){
                             double lowestCost = goalCell.getCost(heuristicSelected);
                             int lowest = heuristicSelected;
-                            for(int heuristic = 0; heuristic < numOfHeuristics; heuristic++){
+
+                            for(int heuristic = 1; heuristic < numOfHeuristics; heuristic++){
+                                this.nodesVisited += close_table[heuristic].size();
                                 if(lowestCost > goalCell.getCost(heuristic)){
                                     lowest = heuristic;
                                     lowestCost = goalCell.getCost(heuristic);
                                 }
                             }
+                            System.out.println("Sequential A* searched: " + nodesVisited + " nodes");
                             System.out.println("Successfully found a path by heuristic: " + lowest + ".");
                             System.out.println("The cost of " + goalCell.getX() + " " + goalCell.getY() + ": " + goalCell.getCost(lowest));
                             return lowest;
@@ -124,6 +128,9 @@ public class Search {
                 }else {
                     if (goalCell.getCost(0) <= open_table[0].peek().getHCost(0)){
                         if (goalCell.getCost(0) < Integer.MAX_VALUE){
+                            for(int heuristic = 1; heuristic < numOfHeuristics; heuristic++){
+                                this.nodesVisited += close_table[heuristic].size();
+                            }
                             System.out.println("Successfully found a path by heuristic: 0.");
                             System.out.println("The cost of " + goalCell.getX() + " " + goalCell.getY() + ": " + goalCell.getCost(0));
                             return 0;
