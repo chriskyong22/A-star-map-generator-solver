@@ -107,7 +107,7 @@ public class Search {
                             double lowestCost = goalCell.getCost(heuristicSelected);
                             int lowest = heuristicSelected;
 
-                            for(int heuristic = 1; heuristic < numOfHeuristics; heuristic++){
+                            for(int heuristic = 0; heuristic < numOfHeuristics; heuristic++){
                                 this.nodesVisited += close_table[heuristic].size();
                                 if(lowestCost > goalCell.getCost(heuristic)){
                                     lowest = heuristic;
@@ -128,7 +128,7 @@ public class Search {
                 }else {
                     if (goalCell.getCost(0) <= open_table[0].peek().getHCost(0)){
                         if (goalCell.getCost(0) < Integer.MAX_VALUE){
-                            for(int heuristic = 1; heuristic < numOfHeuristics; heuristic++){
+                            for(int heuristic = 0; heuristic < numOfHeuristics; heuristic++){
                                 this.nodesVisited += close_table[heuristic].size();
                             }
                             System.out.println("Successfully found a path by heuristic: 0.");

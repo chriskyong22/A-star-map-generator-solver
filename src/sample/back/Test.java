@@ -70,7 +70,7 @@ public class Test{
                             usedMemory = runtime.totalMemory() - runtime.freeMemory();
                             System.out.println("Used memory before: " + (usedMemory) + " bytes");
                             startTime = System.nanoTime();
-                            int heuristic = algorithm.generateSequentialPath(5, 1.5, 2.25);
+                            int heuristic = algorithm.generateSequentialPath(5, 1.5, 2.35);
                             endTime = System.nanoTime();
                             usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
                             memory[algo][i] = ((usedMemoryAfter - usedMemory));
